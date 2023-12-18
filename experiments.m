@@ -8,8 +8,8 @@ previewHorizon = 6;
 regAvgMeFix = zeros(previewHorizon,T);
 %% Number of montecarlo
 % numMonte = 16;
-% numThreads = 7;
-numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
+numThreads = 10;
+% numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 % maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
 numMonte = 5*numThreads;
@@ -80,33 +80,3 @@ parfor numExp = 1:numMonte
     end
     toc;
 end
-
-
-
-
-%% Plot output
-% regAvgMeFix = regAvgMeFix/numMonte;
-% figure
-% imagesc(previewHorizon:T,strInd:previewHorizon-1,(10*log(abs(regAvgMeFix(:,previewHorizon:T)))))
-% colorbar
-% xlabel('time horizon')
-% ylabel('preview length')
-% set(gca,'YDir','normal')
-% exportgraphics(gcf,'myfigure.pdf','ContentType','vector')
-% % saveas(gcf,'myfigure.pdf')
-% qq = regAvgMeFix(:,previewHorizon:T);
-% sum((qq<0),'all')
-
-% figure
-% plot(abs(regAvgMeFix(5,previewHorizon:T)))
-% xlabel('time horizon')
-% ylabel('regret')
-% title('Regret in Window Length 5')
-% exportgraphics(gcf,'preview5alltime.pdf','ContentType','vector')
-% 
-% figure
-% plot(abs(regAvgMeFix(2:end,11)))
-% xlabel('preview horizon')
-% ylabel('regret')
-% title('Regret in time 11')
-% exportgraphics(gcf,'time11allpreview.pdf','ContentType','vector')
