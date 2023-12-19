@@ -54,7 +54,7 @@ toc
 %% performance comparisons
 % disp('Pendulum Comparison')
 % showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum);
-disp('Random Comparison')
+disp('Random Comparison');
 showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRandom);
 % disp('Pendulum Comparison Disturbance')
 % showComparisons(regAvgLiPendulumDisturbance, regAvgMeFixTrackingPendulumDisturbance, regAvgMeFixOnestepPendulumDisturbance);
