@@ -40,7 +40,3 @@ function [x1,u1] = onedimTrackingOL(A,B,Q,R,T,x0,n,m,w,W,K0)
         end
     end
 end
-for i = 1:10
-[A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale);
-svd(ctrb(A,B))
-end

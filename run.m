@@ -3,12 +3,12 @@ close all
 % clc
 %% initialize experiment
 T = 40;
-previewHorizon = 20;
-numThreads = 10;
+previewHorizon = 5;
+numThreads = 6;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
-% maxNumCompThreads(numThreads);
+maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
-numMonte = 10*numThreads;
+numMonte = 1*numThreads;
 wMag = 0;
 %% pendulum system
 % tic
