@@ -13,15 +13,5 @@ function [A,B,K0] = LinearInvertedPendulumGenerator(poleScale)
 
     A = [0,1,0,0;0,a22,a23,0;0,0,0,1;0,a42,a43,0];
     B = [0;(I+mass*l^2)/den;0;mass*l/den];
-%     Pmax = findPmax((1.2*10^4+2*10^4)*eye(n),(4.8*10^4+5*10^4)*eye(m),A,B);
     K0 = -place(A,B,rand(1,4)*poleScale);
-%     A = zeros(n,n,T);
-% B = zeros(n,m,T);
-% tempA = 10*rand(n,n);
-% tempB = 10*rand(n,m);
-% for t = 1:T
-%     A(:,:,t) = tempA;
-%     B(:,:,t) = tempB;
-% end
-    
 end

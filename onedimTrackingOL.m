@@ -27,11 +27,20 @@ function [x1,u1] = onedimTrackingOL(A,B,Q,R,T,x0,n,m,w,W,K0)
               P(:,:,i) = (A')*P(:,:,i+1)*A+tempQ+(A')*P(:,:,i+1)*B*K(:,:,i);
         end
         
-        x_tcond = x0;
-        for j = 1:t-1
-            x_tcond = (A+B*K(:,:,j))*x_tcond + w(:,j);
+        if(t == 1)
+            u1(:,1) = K(:,:,1)*x0;
+            x1(:,t+1) = A*x1(:,t)+B*u1(:,t)+w(:,t);
+        else
+            x_tcond = x0;
+            for j = 1:t-1
+                x_tcond = (A+B*K(:,:,j))*x_tcond + w(:,j);
+            end
+            u1(:,t) = K0*(x1(:,t)-x_tcond) + K(:,:,t)*x_tcond;
+            x1(:,t+1) = A*x1(:,t)+B*u1(:,t)+w(:,t);
         end
-        u1(:,t) = K0*(x1(:,t)-x_tcond) + K(:,:,t)*x_tcond;
-        x1(:,t+1) = A*x1(:,t)+B*u1(:,t)+w(:,t);
     end
+end
+for i = 1:10
+[A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale);
+svd(ctrb(A,B))
 end
