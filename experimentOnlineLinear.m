@@ -3,7 +3,7 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
     regAvgMeFix1 = zeros(previewHorizon,T);
     regAvgMeFix2 = zeros(previewHorizon,T);
     regAvgLi = zeros(previewHorizon,T);
-    poleScale = 10^(-2);
+    poleScale = 10^(-1);
     if(strcmp("pendulum",typeSystem))
 %             [~,B,~] = LinearInvertedPendulumGenerator(poleScale);
 %             sysDim = size(B);

@@ -3,12 +3,12 @@ close all
 % clc
 %% initialize experiment
 T = 40;
-previewHorizon = 5;
-numThreads = 6;
+previewHorizon = 7;
+numThreads = 20;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
-numMonte = 20*numThreads;
+numMonte = 50*numThreads;
 wMag = 0;
 %% pendulum system
 tic
@@ -27,22 +27,20 @@ save('.\regrets\regAvgMeFixOnestepRandom.mat','regAvgMeFixOnestepRandom')
 save('.\regrets\regAvgLiRandom.mat','regAvgLiRandom')
 toc
 %% disturbance 
-% wMag = 1;
-% tic
-% [regAvgMeFixTrackingPendulumDisturbance,regAvgMeFixOnestepPendulumDisturbance,regAvgLiPendulumDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
-% save('.\regrets\regAvgMeFixTrackingPendulumDisturbance.mat','regAvgMeFixTrackingPendulumDisturbance')
-% save('.\regrets\regAvgMeFixOnestepPendulumDisturbance.mat','regAvgMeFixOnestepPendulumDisturbance')
-% save('.\regrets\regAvgLiPendulumDisturbance.mat','regAvgLiPendulumDisturbance')
-% toc
+wMag = 1;
+tic
+[regAvgMeFixTrackingPendulumDisturbance,regAvgMeFixOnestepPendulumDisturbance,regAvgLiPendulumDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
+save('.\regrets\regAvgMeFixTrackingPendulumDisturbance.mat','regAvgMeFixTrackingPendulumDisturbance')
+save('.\regrets\regAvgMeFixOnestepPendulumDisturbance.mat','regAvgMeFixOnestepPendulumDisturbance')
+save('.\regrets\regAvgLiPendulumDisturbance.mat','regAvgLiPendulumDisturbance')
+toc
 %%
-% tic
-% n = 4;
-% m = 1;
-% [regAvgMeFixTrackingRandomDisturbance,regAvgMeFixOnestepRandomDisturbance,regAvgLiRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
-% save('.\regrets\regAvgMeFixTrackingRandomDisturbance.mat','regAvgMeFixTrackingRandomDisturbance')
-% save('.\regrets\regAvgMeFixOnestepRandomDisturbance.mat','regAvgMeFixOnestepRandomDisturbance')
-% save('.\regrets\regAvgLiRandomDisturbance.mat','regAvgLiRandomDisturbance')
-% toc
+tic
+[regAvgMeFixTrackingRandomDisturbance,regAvgMeFixOnestepRandomDisturbance,regAvgLiRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
+save('.\regrets\regAvgMeFixTrackingRandomDisturbance.mat','regAvgMeFixTrackingRandomDisturbance')
+save('.\regrets\regAvgMeFixOnestepRandomDisturbance.mat','regAvgMeFixOnestepRandomDisturbance')
+save('.\regrets\regAvgLiRandomDisturbance.mat','regAvgLiRandomDisturbance')
+toc
 %% dynamic game
 % tic
 % Nplayers = 2;
@@ -52,14 +50,14 @@ toc
 % save('.\regrets\regAvgMeFixGame.mat','regAvgMeFixGame')
 % toc
 %% performance comparisons
-% disp('Pendulum Comparison')
-% showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum);
+disp('Pendulum Comparison')
+showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum);
 disp('Random Comparison');
 showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRandom);
-% disp('Pendulum Comparison Disturbance')
-% showComparisons(regAvgLiPendulumDisturbance, regAvgMeFixTrackingPendulumDisturbance, regAvgMeFixOnestepPendulumDisturbance);
-% disp('Random Comparison Disturbance')
-% showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance, regAvgMeFixOnestepRandomDisturbance);
+disp('Pendulum Comparison Disturbance')
+showComparisons(regAvgLiPendulumDisturbance, regAvgMeFixTrackingPendulumDisturbance, regAvgMeFixOnestepPendulumDisturbance);
+disp('Random Comparison Disturbance')
+showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance, regAvgMeFixOnestepRandomDisturbance);
 
 %% Data Processing
 % 
@@ -73,21 +71,22 @@ showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRan
 % % % % %comparison with Li no disturbance
 % DGDataProcessing(regAvgLiPendulum-regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
 % DGDataProcessing(regAvgLiPendulum-regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
-% % DGDataProcessing(regAvgLiRandom-regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
+% DGDataProcessing(regAvgLiRandom-regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
 % % DGDataProcessing(regAvgLiRandom-regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
 % % 
 % % % 
 % % % % %linear with disturbance
-% % DGDataProcessing(regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
-% % DGDataProcessing(regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
-% % DGDataProcessing(regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
-% % DGDataProcessing(regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
+% DGDataProcessing(regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
+% DGDataProcessing(regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
+% DGDataProcessing(regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
+% DGDataProcessing(regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
+% DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte,ceil(n/m))
 % % % 
 % % % %comparison with li disturbance regAvgLiPendulumDisturbance
 % % DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
 % % DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
-% % DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
-% % DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
+% DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
+% DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
 % % 
 % 
 % %dynamic potential game
