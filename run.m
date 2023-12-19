@@ -61,32 +61,32 @@ showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance,
 
 %% Data Processing
 % 
-% % %linear no disturbance
-% DGDataProcessing(regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
-% DGDataProcessing(regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
-% DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte)
-% % % 
-% % % % %comparison with Li no disturbance
-% DGDataProcessing(regAvgLiPendulum-regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgLiPendulum-regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
-% DGDataProcessing(regAvgLiRandom-regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
-% % DGDataProcessing(regAvgLiRandom-regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
+% %linear no disturbance
+DGDataProcessing(regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
+DGDataProcessing(regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
+DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte)
 % % 
-% % % 
-% % % % %linear with disturbance
-% DGDataProcessing(regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
-% DGDataProcessing(regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
-% DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte,ceil(n/m))
-% % % 
-% % % %comparison with li disturbance regAvgLiPendulumDisturbance
-% % DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
-% % DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
-% DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
-% DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
+% % % %comparison with Li no disturbance
+DGDataProcessing(regAvgLiPendulum-regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgLiPendulum-regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
+DGDataProcessing(regAvgLiRandom-regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgLiRandom-regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
+% 
+% % 
+% % % %linear with disturbance
+DGDataProcessing(regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
+DGDataProcessing(regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
+DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte,ceil(n/m))
+% % 
+% % %comparison with li disturbance regAvgLiPendulumDisturbance
+DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixTrackingPendulumDisturbance, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgLiPendulumDisturbance-regAvgMeFixOnestepPendulumDisturbance, T, previewHorizon,numMonte,4)
+DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixTrackingRandomDisturbance, T, previewHorizon,numMonte)
+DGDataProcessing(regAvgLiRandomDisturbance-regAvgMeFixOnestepRandomDisturbance, T, previewHorizon,numMonte,ceil(n/m))
 % % 
 % 
 % %dynamic potential game
