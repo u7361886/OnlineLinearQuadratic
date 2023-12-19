@@ -27,6 +27,7 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     xlabel('Time Horizon','FontSize',18)
     ylabel('Regret','FontSize',18)
     exportgraphics(gcf,'.\plots\' + name1 + 'Window' + string(window1) + 'ColorMap' + '.pdf','ContentType','vector','Resolution',600)
+    
     figure
     plot(max(d,previewHorizon):T,regAvg(window1,max(d,previewHorizon):T), 'LineWidth',4)
     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', 16);

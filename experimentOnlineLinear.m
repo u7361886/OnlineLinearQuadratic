@@ -3,7 +3,7 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
     regAvgMeFix1 = zeros(previewHorizon,T);
     regAvgMeFix2 = zeros(previewHorizon,T);
     regAvgLi = zeros(previewHorizon,T);
-    poleScale = 10^(-2);
+    poleScale = 10^(-3);
     if(typeSystem == "pendulum")
             [~,B,~] = LinearInvertedPendulumGenerator(poleScale);
             sysDim = size(B);
@@ -11,7 +11,6 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
             m = sysDim(2);
     end
     parfor numExp = 1:numMonte
-%         tic;
         %% Linear System onedim
         if(typeSystem == "pendulum")
             [A,B,K0] = LinearInvertedPendulumGenerator(poleScale);
@@ -32,11 +31,11 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
             for t = previewHorizon:T
                 %% Onedim Linear
                 [xNash,uNash] = onedimNash(Q,R,A,B,w,t,x0,n,m);
-                [x1,u1] = onedimTrackingOL(A,B,Q,R,T,x0,n,m,w,W,K0);
-                [x2,u2] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d);
+                [x1,u1] = onedimTrackingOL(A,B,Q,R,t,x0,n,m,w,W,K0);
+                [x2,u2] = onedimOnestepOL(A,B,Q,R,t,x0,n,m,w,W,d);
                 Qmax = (qrangeLower+qrangeHigher)*eye(n);
                 Rmax = (rrangeLower+rrangeHigher)*eye(m);
-                [x3,u3] = onedimLina(A,B,Q,R,T,x0,n,m,w,W,Qmax,Rmax);
+                [x3,u3] = onedimLina(A,B,Q,R,t,x0,n,m,w,W,Qmax,Rmax);
                 tempAdd = zeros(previewHorizon,T);
                 tempAdd(W+1,t) = onedimRegret(x1,u1,xNash,uNash,Q,R,t);
                 regAvgMeFix1 = regAvgMeFix1 + tempAdd;
@@ -46,6 +45,8 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
                 regAvgLi = regAvgLi + tempAdd;
             end
         end
-%         toc;
     end
+    regAvgMeFix1 = regAvgMeFix1./numMonte;
+    regAvgMeFix2 = regAvgMeFix2./numMonte;
+    regAvgLi = regAvgLi./numMonte;
 end

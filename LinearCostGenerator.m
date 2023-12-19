@@ -2,7 +2,7 @@ function [Q,R] = LinearCostGenerator(qrangeLower,qrangeHigher,rrangeLower,rrange
     Q = zeros(n,n,T);
     R = zeros(m,m,T);
     for t = 1:T
-        Q(:,:,t) = qrangeLower+qrangeHigher*diag(rand(1,n));
-        R(:,:,t) = rrangeLower+rrangeHigher*diag(rand(1,m));
+        Q(:,:,t) = qrangeLower*eye(n)+qrangeHigher*diag(rand(1,n));
+        R(:,:,t) = rrangeLower*eye(m)+rrangeHigher*diag(rand(1,m));
     end
 end
