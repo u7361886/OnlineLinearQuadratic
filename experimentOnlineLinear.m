@@ -4,7 +4,7 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
     regAvgMeFix2 = zeros(previewHorizon,T);
     regAvgLi = zeros(previewHorizon,T);
     poleScale = 10^(-2);
-    if(typeSystem == "pendulum")
+    if(strcmp("pendulum",typeSystem))
 %             [~,B,~] = LinearInvertedPendulumGenerator(poleScale);
 %             sysDim = size(B);
 %             n = sysDim(1);
@@ -13,9 +13,9 @@ function [regAvgMeFix1,regAvgMeFix2,regAvgLi] = experimentOnlineLinear(T,preview
         m = 1;
     end
     parfor numExp = 1:numMonte
-        warning('off',"all")
+        warning('off','all')
         %% Linear System onedim
-        if(typeSystem == "pendulum")
+        if(strcmp("pendulum",typeSystem))
             [A,B,K0] = LinearInvertedPendulumGenerator(poleScale);
         else
             [A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale);
