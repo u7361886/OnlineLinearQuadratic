@@ -4,7 +4,7 @@ close all
 %% initialize experiment
 T = 40;
 previewHorizon = 5;
-numThreads = 6;
+numThreads = 10;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
@@ -52,8 +52,8 @@ toc
 % save('.\regrets\regAvgMeFixGame.mat','regAvgMeFixGame')
 % toc
 %% performance comparisons
-disp('Pendulum Comparison')
-showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum);
+% disp('Pendulum Comparison')
+% showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum);
 disp('Random Comparison')
 showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRandom);
 % disp('Pendulum Comparison Disturbance')
@@ -64,8 +64,8 @@ showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRan
 %% Data Processing
 % 
 % % %linear no disturbance
-DGDataProcessing(regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
-DGDataProcessing(regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
+% DGDataProcessing(regAvgMeFixTrackingPendulum, T, previewHorizon,numMonte)
+% DGDataProcessing(regAvgMeFixOnestepPendulum, T, previewHorizon,numMonte,4)
 DGDataProcessing(regAvgMeFixTrackingRandom, T, previewHorizon,numMonte)
 DGDataProcessing(regAvgMeFixOnestepRandom, T, previewHorizon,numMonte,ceil(n/m))
 DGDataProcessing(regAvgLiRandom, T, previewHorizon,numMonte)

@@ -27,10 +27,10 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     xfontsize = 25;
     yfontsize = 25;
     ylabelFontSize = 24;
-%     size1 = 1050;
-%     size2 = 850;
-    size1 = 1450;
-    size2 = 950;
+    size1 = 1050;
+    size2 = 850;
+%     size1 = 1450;
+%     size2 = 950;
 
     figure
     imagesc(previewHorizon:T,0:previewHorizon-1,(regAvg(:,previewHorizon:T)))
