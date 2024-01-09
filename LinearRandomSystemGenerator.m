@@ -11,7 +11,7 @@ function [A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale)
             if(mod(n, 2) ~= 0)
                 K0 = -place(A,B,[generateComplexNumbers(2*floor(n/2)),rand(1)].*poleScale);
             else
-                K0 = -place(A,B,generateComplexNumbers(2*floor(n/2)).*poleScale);
+                K0 = -place(A,B,generateComplexNumbers(n).*poleScale);
             end
         catch
             count = 1;

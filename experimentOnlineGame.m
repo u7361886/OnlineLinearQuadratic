@@ -1,6 +1,9 @@
-function regAvgMeFix = experimentOnlineGame(T,previewHorizon,numMonte,NPlayers)
+function [costAvgMeFix, costAvgNash] = experimentOnlineGame(T,previewHorizon,numMonte,NPlayers)
+%regAvgMeFix = experimentOnlineGame(T,previewHorizon,numMonte,NPlayers)
     %% regret output initialization
-    regAvgMeFix = zeros(previewHorizon,T);
+    costAvgMeFix = zeros(previewHorizon,T);
+    costAvgNash = zeros(previewHorizon,T);
+%     regAvgMeFix = zeros(previewHorizon,T);
     %% Dynamic game players
     n = 2;
     m = 1;
@@ -23,11 +26,15 @@ function regAvgMeFix = experimentOnlineGame(T,previewHorizon,numMonte,NPlayers)
         for W = strInd:previewHorizon-1
             for t = previewHorizon:T
                 %% DG control
+                tempAdd = zeros(previewHorizon,T);
                 [xNash,uNash] = nashDGFB2(Q,R,A,B,w,t,x0,n,m,NPlayers);
                 [x1,u1] = nashOL2(A,B,Q,R,t,x0,n,m,w,W,NPlayers,K0);
-                tempAdd = zeros(previewHorizon,T);
-                tempAdd(W+1,t) = NERegret2(x1,u1,xNash,uNash,Q,R,t,NPlayers);
-                regAvgMeFix = regAvgMeFix + tempAdd;
+                
+                tempAdd(W+1,t) = NECost(x1,u1,Q,R,t,NPlayers);
+                costAvgMeFix = costAvgMeFix + tempAdd;
+
+                tempAdd(W+1,t) = NECost(xNash,uNash,Q,R,t,NPlayers);
+                costAvgNash = costAvgNash + tempAdd;
             end
         end
 %         toc;
