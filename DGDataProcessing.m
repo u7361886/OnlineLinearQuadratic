@@ -18,7 +18,7 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
         window1 = 1;
         window2 = floor(previewHorizon/2);
     elseif(nargin == 6)
-        name1 = name1 + "Preview" + string(previewHorizon) + "Time" + string(T) + "Monte" + string(numMonte);
+        name1 = string(name1) + "Preview" + string(previewHorizon) + "Time" + string(T) + "Monte" + string(numMonte);
         time1 = floor(T/2);
         time2 = previewHorizon+1;
         window1 = 1;
@@ -60,11 +60,10 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     plot(max(d,previewHorizon):T,regAvg(window2,max(d,previewHorizon):T), 'LineWidth',4)
     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
-%     curtick = get(gca, 'xTick');
-%     xticks(unique(round(curtick)));
     xlabel('Time Horizon','FontSize',xfontsize)
     ylabel('Regret','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window2) + ".pdf",'ContentType','vector')
+    
     figure
     plot(0:1:previewHorizon-1,log(abs(regAvg(:,time1))), 'LineWidth',4)
     curtick = get(gca, 'xTick');
