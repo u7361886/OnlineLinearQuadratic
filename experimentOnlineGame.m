@@ -39,4 +39,6 @@ function [costAvgMeFix, costAvgNash] = experimentOnlineGame(T,previewHorizon,num
         end
 %         toc;
     end
+    costAvgMeFix = costAvgMeFix./numMonte;
+    costAvgNash = costAvgNash./numMonte;
 end

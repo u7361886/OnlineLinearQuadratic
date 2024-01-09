@@ -8,7 +8,7 @@ numThreads = 20;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
-numMonte = 100*numThreads;
+numMonte = 50*numThreads;
 wMag = 0;
 %% pendulum system
 tic
@@ -71,6 +71,31 @@ previewHorizon = 6;
 save('.\regrets\costAvgMeFixPlayers6.mat','costAvgMeFixPlayers6')
 save('.\regrets\costAvgNashPlayers6.mat','costAvgNashPlayers6')
 toc
+
+player2 = (costAvgMeFixPlayers2-costAvgNashPlayers2)./costAvgNashPlayers2;
+player6 = (costAvgMeFixPlayers6-costAvgNashPlayers6)./costAvgNashPlayers6;
+
+
+player2 = (costAvgMeFixPlayers2(:,previewHorizon:T)-costAvgNashPlayers2(:,previewHorizon:T))./costAvgNashPlayers2(:,previewHorizon:T);
+
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,player2)
+colorbar
+% 
+figure
+plot(player2(:,3))
+% 
+player6 = (costAvgMeFixPlayers6(:,previewHorizon:T)-costAvgNashPlayers6(:,previewHorizon:T))./costAvgNashPlayers6(:,previewHorizon:T);
+
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,costAvgNashPlayers6)
+colorbar
+
+figure
+plot((player6(:,3)))
+
+figure
+plot((costAvgNashPlayers6(:,30)))
 
 % %% load files
 % load(".\regrets\regAvgLiPendulum.mat")
@@ -143,6 +168,8 @@ showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance,
 % % 
 % 
 % %dynamic potential game
-% DGDataProcessing(regAvgMeFixGame, T, previewHorizon, numMonte)
+DGDataProcessing(costAvgMeFixPlayers2-costAvgNashPlayers2, T, previewHorizon, numMonte, 1, "test")
 
-% DGDataProcessing(regAvgMeFixGame,T, previewHorizon,numMonte, 1, "regAvgMeFixGamePlayers2")
+DGDataProcessing(player2, T, previewHorizon, numMonte, 1, "player2")
+
+DGDataProcessing(player6,T, previewHorizon,numMonte, 1, "player6")
