@@ -4,9 +4,9 @@ close all
 %% initialize experiment
 T = 40;
 previewHorizon = 10;
-numThreads = 20;
+numThreads = 10;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
-maxNumCompThreads(numThreads);
+% maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
 numMonte = 100*numThreads;
 wMag = 0;
@@ -56,22 +56,142 @@ tic
 Nplayers = 2;
 T = 40;
 previewHorizon = 6;
-[costAvgMeFixPlayers2, costAvgNashPlayers2] = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
+[costAvgMeFixPlayers2, costAvgNashPlayers2, relativeAvgPlayers2] = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
 save('.\regrets\costAvgMeFixPlayers2.mat','costAvgMeFixPlayers2')
 save('.\regrets\costAvgNashPlayers2.mat','costAvgNashPlayers2')
+save('.\regrets\relativeAvgPlayers2.mat','relativeAvgPlayers2')
 % regAvgMeFixGame = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
 % save('.\regrets\regAvgMeFixGame.mat','regAvgMeFixGame')
 toc
+
+
+
+% 
+% load(".\regrets\costAvgMeFixPlayers6.mat")
+% load(".\regrets\costAvgMeFixPlayers2.mat")
+% load(".\regrets\costAvgNashPlayers6.mat")
+% load(".\regrets\costAvgNashPlayers2.mat")
+% 
+% figure
+% surf(costAvgMeFixPlayers2)
+% hold on
+% surf(costAvgNashPlayers2)
+% 
+% player2=relativeAvgPlayers2/numMonte;
+% figure
+% imagesc(abs(player2))
+% colorbar
+% % player6=(costAvgMeFixPlayers6-costAvgNashPlayers6)./costAvgNashPlayers6;
+% figure
+% plot(abs(player2(:,15)))
+% 
+% timeSlice = 15;
+% figure
+% plot(costAvgMeFixPlayers2(:,timeSlice))
+% hold on
+% plot(costAvgNashPlayers2(:,timeSlice))
+% 
+% qplayer2 = ((costAvgMeFixPlayers2-costAvgNashPlayers2)./costAvgNashPlayers2);
+% figure
+% imagesc(qplayer2)
+% colorbar
+% sum(qplayer2 < 1,'all')/(size(qplayer2,1)*size(qplayer2,2))
+
+% 
+% 
+% figure
+% imagesc(player6)
+% colorbar
+% 
+% figure
+% plot(player6(:,7))
 
 tic
 Nplayers = 6;
 T = 40;
 previewHorizon = 6;
-[costAvgMeFixPlayers6, costAvgNashPlayers6] = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
+[costAvgMeFixPlayers6, costAvgNashPlayers6, relativeAvgPlayers6] = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
 save('.\regrets\costAvgMeFixPlayers6.mat','costAvgMeFixPlayers6')
 save('.\regrets\costAvgNashPlayers6.mat','costAvgNashPlayers6')
+save('.\regrets\relativeAvgPlayers6.mat','relativeAvgPlayers6')
 toc
 
+% player2 = costAvgMeFixPlayers2-costAvgNashPlayers2;
+% player6 = costAvgMeFixPlayers6-costAvgNashPlayers6;
+% 
+% player2Rel = player2./costAvgNashPlayers2;
+% player6Rel = player6./costAvgNashPlayers6;
+% 
+% figure
+% imagesc(costAvgMeFixPlayers2)
+% colorbar
+% 
+% figure
+% imagesc(costAvgMeFixPlayers6)
+% colorbar
+% 
+% figure
+% imagesc(costAvgNashPlayers2)
+% colorbar
+% 
+% figure
+% imagesc(costAvgNashPlayers6)
+% colorbar
+% 
+% figure
+% plot(costAvgMeFixPlayers2(3,5:T))
+% 
+% figure
+% imagesc(player2Rel)
+% colorbar
+% figure
+% plot(player2Rel(3,5:T))
+% figure
+% plot(player2Rel(:,35))
+
+
+% 
+% figure
+% imagesc(player6Rel)
+% colorbar
+% figure
+% plot(player6Rel(2,5:T))
+% 
+% figure
+% plot(player6Rel(:,36))
+% 
+% figure
+% imagesc(costAvgMeFixPlayers6)
+% 
+% figure
+% plot(player2(1,5:T))
+
+% figure
+% imagesc(relativeAvgPlayers2)
+% colorbar
+% figure
+% imagesc(relativeAvgPlayers6)
+% colorbar
+% 
+% relative2 = ((costAvgMeFixPlayers2-costAvgNashPlayers2)./costAvgNashPlayers2);
+% figure
+% imagesc(relative2)
+% colorbar
+% figure
+% plot(relative2(:, 15))
+% 
+% figure
+% plot(relative2(5,5:T))
+% 
+% relative6 = ((costAvgMeFixPlayers6-costAvgNashPlayers6)./costAvgNashPlayers6);
+% figure
+% imagesc(relative6)
+% colorbar
+% figure
+% plot(relative6(:, 15))
+% 
+% figure
+% plot(relative6(2,5:T))
 % %% load files
 % load(".\regrets\regAvgLiPendulum.mat")
 % load(".\regrets\regAvgMeFixTrackingRandom.mat")
@@ -145,4 +265,8 @@ showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance,
 % %dynamic potential game
 % DGDataProcessing(regAvgMeFixGame, T, previewHorizon, numMonte)
 
-% DGDataProcessing(regAvgMeFixGame,T, previewHorizon,numMonte, 1, "regAvgMeFixGamePlayers2")
+DGDataProcessing(player2,T, previewHorizon,numMonte, 1, "players2")
+DGDataProcessing(player6,T, previewHorizon,numMonte, 1, "players6")
+
+DGDataProcessing(player2./costAvgNashPlayers2,T, previewHorizon,numMonte, 1, "players2Relative")
+DGDataProcessing(player6./costAvgNashPlayers6,T, previewHorizon,numMonte, 1, "players6Relative")

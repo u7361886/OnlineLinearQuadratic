@@ -1,7 +1,7 @@
 function [Q,R] = DGCostGenerator(qrangeLower,qrangeHigher,b,n,m,NPlayers,T)
     Q = zeros(n,n,NPlayers,T); 
     R = zeros(NPlayers*m,NPlayers*m,NPlayers,T);
-    rtemp = 100;
+    rtemp = 10;
     for t = 1:T
         r = zeros(NPlayers,1);
         r(1) = rtemp*rand(1);
