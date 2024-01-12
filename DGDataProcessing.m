@@ -7,22 +7,30 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     if(nargin == 4)
         d = 1;
         time1 = floor(T/2);
-        time2 = previewHorizon+1;
-        window1 = 1;
-        window2 = floor(previewHorizon/2);
+        time2 = 35;
+%         time2 = previewHorizon+1;
+        window1 = 5;
+%         window2 = floor(previewHorizon/2);
+        window2 = 7;
         name1 = string(inputname(1)) + 'Preview' + string(previewHorizon) + 'Time' + string(T) + 'Monte' + string(numMonte);
     elseif (nargin == 5)
         name1 = string(inputname(1)) + 'Preview' + string(previewHorizon) + 'Time' + string(T) + 'Monte' + string(numMonte);
         time1 = floor(T/2);
-        time2 = previewHorizon+1;
-        window1 = 1;
-        window2 = floor(previewHorizon/2);
+        time2 = 35;
+%         time2 = previewHorizon+1;
+        window1 = 5;
+        window2 = 7;
+%         window1 = 1;
+%         window2 = floor(previewHorizon/2);
     elseif(nargin == 6)
         name1 = string(name1) + "Preview" + string(previewHorizon) + "Time" + string(T) + "Monte" + string(numMonte);
         time1 = floor(T/2);
-        time2 = previewHorizon+1;
-        window1 = 1;
-        window2 = floor(previewHorizon/2);
+        time2 = 35;
+%         time2 = previewHorizon+1;
+        window1 = 5;
+        window2 = 7;
+%         window1 = 1;
+%         window2 = floor(previewHorizon/2);
     end
     xfontsize = 25;
     yfontsize = 25;
@@ -40,28 +48,28 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     curtick = get(gca, 'xTick');
     xticks(unique(round(curtick)));
     xlabel('Time Horizon','FontSize',xfontsize)
-    ylabel('Regret','FontSize',yfontsize)
+    ylabel('log|Regret|','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window1) + "ColorMap" + ".pdf",'ContentType','vector','Resolution',600)
     
 %     size1 = 1550;
 %     size2 = 1050;
     figure
-    plot(max(d,previewHorizon):T,regAvg(window1,max(d,previewHorizon):T), 'LineWidth',4)
+    plot(max(d,previewHorizon):T,log(regAvg(window1,max(d,previewHorizon):T)), 'LineWidth',4)
     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
 %     curtick = get(gca, 'xTick');
 %     xticks(unique(round(curtick)));
     xlabel('Time Horizon','FontSize',xfontsize)
-    ylabel('Regret','FontSize',yfontsize)
+    ylabel('log|Regret|','FontSize',yfontsize)
     xlim([previewHorizon T])
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window1) + ".pdf",'ContentType','vector','Resolution',600)
     
     figure
-    plot(max(d,previewHorizon):T,regAvg(window2,max(d,previewHorizon):T), 'LineWidth',4)
+    plot(max(d,previewHorizon):T,log(regAvg(window2,max(d,previewHorizon):T)), 'LineWidth',4)
     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Time Horizon','FontSize',xfontsize)
-    ylabel('Regret','FontSize',yfontsize)
+    ylabel('log|Regret|','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window2) + ".pdf",'ContentType','vector')
     
     figure
