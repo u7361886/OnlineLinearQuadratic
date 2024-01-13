@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{appendix}
+\usepackage{graphicx}
+\usepackage{xr}
+\usepackage{verbatim}
+% \externaldocument[aux]{Auxillary.tex}
+\usepackage{subfigure}
+
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{problem}{Problem}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{assumption}{Assumption}
+% \newtheorem{remark}{Remark}
+
+
+% \newcommand{\contTilde}[1]{\mathbf{\tilde{#1}}}
+% \newcommand{\contBar}[1]{\bar{\mathbf{#1}}}
+% \newcommand{\transpose}{\mathsf{T}}
+% \newcommand{\infoat}[1]{\mathcal{H}_{#1}}
+% \newcommand{\opcontrol}[2]{\pi^{*}(#1,\infoat{#2})}
+% \newcommand{\lqr}[3]{{#1}^{\transpose}Q_{#3}{#1}+{#2}^{\transpose}R_{#3}{#2}}
+% \newcommand{\quadx}[2]{{#1}^{\transpose}{#2}{#1}}
+% \newcommand{\gameVars}[2]{(x_{t})_{t=1}^{#1}, (u_{i,t})_{i=1,t=1}^{#2,#1}}
+% \newcommand{\gameVarAtTime}[2]{x_{t},({#1}_{i,t})_{i=1}^{#2}}
+% \newcommand{\gameVarPlayer}[3]{x_{#3},{#1}_{#3}^{#2}, \mathbf{u}_{#3}^{-#2}}
+% \newcommand{\myinner}[1]{\langle(#1)x,x\rangle}
+
+
+\newcommand{\usequence}[2]{(u_{i,t})_{i=1,t=1}^{#1,#2}}
+\newcommand{\contTilde}[1]{\mathbf{\tilde{#1}}}
+\newcommand{\transpose}{\mathsf{T}}
+\newcommand{\myinner}[1]{\langle(#1)x,x\rangle}
+\newcommand{\quadinner}[1]{x^{\transpose}(#1)x}
+\DeclareMathOperator{\Log}{\mathrm{Log}}
+\newcommand{\BK}[1]{\mathbf{B}\bar{K}_{#1}}
+\newcommand{\realR}[1]{\mathbb{R}^{#1}}
+\newcommand{\contu}{\mathbf{u}}
+\DeclareMathOperator{\contB}{\mathbf{B}}
+
+\newtheorem{problem}{Problem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{theorem}{Theorem}
+
+
+\title{On the Regret Analysis of Online Feedback Potential Dynamic Game via Trajectory Prediction and Tracking}
+\author{Yitian Chen}
+% \date{June 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{INTRODUCTION}
+This covers a brief proof outline of the N-player version online potential game. We start by outlining the N-player version of Theorem 5-7 from paper \cite{prasad_structure_2023}, then we outline the sketch of proofs for all lemmas and main theorems from the ACC2024 paper.
+
+\section{Essential Assumptions and Theorems to Establish \cite[Theorem 5-7.]{prasad_structure_2023}}
+Define the cost function to the i-th player at time t is given by
+\begin{equation}
+    g_{t}^{i}(x,u) = x^{\transpose}Q_{t}^{i}x_{t} + \sum_{p=1}^{N}\sum_{q=1}^{N} u_{p}^{\transpose}[R^{i}_{t}]_{pq}u_{q} = x^{\transpose}Q_{t}^{i}x_{t} + \contu^{\transpose}R_{t}^{i}\contu.
+\end{equation}
+% The following theorem provides the suffi
+% \begin{theorem}
+    
+% \end{theorem}
+
+\section{Extension of \cite[Theorem 5-7.]{prasad_structure_2023}}
+\begin{definition}
+    \begin{align}
+        &P_{T}^{i} = Q_{T}^{i},\\
+        &[\Theta_{t}]_{ij} = [R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j},\\
+        &P_{t}^{i} = Q_{t}^{i} + K_{t}^{\transpose}R_{t}^{i}K_{t} + (A+BK_{t})^{\transpose}P_{t+1}^{i}(A+BK_{t}),\\
+        &K_{t} = \Theta_{t}^{-1}
+        \begin{bmatrix}
+            B^{1\transpose}P_{t+1}^{1}\\
+            \vdots\\
+            B^{N\transpose}P_{t+1}^{N}
+        \end{bmatrix}A,
+    \end{align}   
+    for $i = 1,\cdots,N$.
+\end{definition}
+\begin{assumption}\label{assumption:pd1}
+    The matrices $[R_{t}^{i}]_{ii} + B^{i\transpose}P_{t+1}^{i}B^{i}(i=1,\cdots,N)$ and $\Theta_{t}$ are invertable for all $t=1,\cdots,T-1$.
+\end{assumption}
+\begin{definition}[LQOCP]
+    LQOCP: 
+    \begin{align}
+        &\bar{g}_{T}(x) = x^{\transpose}\bar{Q}_{T}x,\\
+        &\bar{g}_{t}(x,u) = x^{\transpose}\bar{Q}_{t}x + \contu^{\transpose}\bar{R}_{t}\contu,\\
+        &\bar{P}_{T} = \bar{Q}_{T},\\
+        &\bar{P}_{t} = \bar{Q}_{t} + \bar{K}_{t}^{\transpose}\bar{R}_{t}\bar{K}_{t} + (A+B\bar{K}_{t})^{\transpose}\bar{P}_{t+1}(A+B\bar{K}_{t}),\\
+        &\bar{K}_{t} = -\bar{\Theta}_{t}^{-1}\contB^{\transpose}\bar{P}_{t+1}A,\\
+        &\Theta_{t} = \bar{R}_{t} + \mathbf{B}^{\transpose}\bar{P}_{t+1}\mathbf{B}.
+    \end{align}
+\end{definition}
+\begin{assumption}\label{assumption:pd2}
+    The matrix $\bar{\Theta}_{t}$ is positive definite for all $t=1,\cdots,T$.
+\end{assumption}
+
+\begin{theorem}[Theorem 5 Extension]
+    Let Assumption \ref{assumption:pd1} and \ref{assumption:pd2} hold true. Consider the following conditions,
+    \begin{align}
+        &B^{i\transpose}P_{t+1}^{i}A = B^{i\transpose}\bar{P}_{t+1}A,\\
+        &[R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j} = [\bar{R}_{t}]_{ij} + B^{i\transpose}\bar{P}_{t+1}B^{j}(\forall i,j),\\
+        &[R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j} = ([R_{t}^{i}]_{ji} + B^{j\transpose}P_{t+1}^{i}B^{i})^{\transpose}(i\neq j).
+    \end{align}
+    Then the LQ dynamic game is a LQ dynamic game.
+\end{theorem}
+\begin{proof}
+    For the i-th player, consider Equation ?, we have
+    \begin{align*}
+        \sum_{j=1}^{N}([R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j})u_{t}^{j} + B^{i\transpose}P_{t+1}^{i}Ax_{t} = \sum_{j=1}^{N}([\bar{R}_{t}]_{ij} + B^{i\transpose}\bar{P}_{t+1}B^{j})u_{t}^{j} + B^{i\transpose}\bar{P}_{t+1}Ax_{t},
+    \end{align*}
+    for $\forall (x_{t},u^{j}_{t})(j=1,\cdots,N)$. For any $i,j=1\cdots,N$, 
+    \begin{align*}
+        &[\Theta_{t}]_{ij} = [R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j},\\  
+        &[\bar{\Theta}_{t}]_{ij} = [\bar{R}_{t}]_{ij} + B^{i\transpose}\bar{P}_{t+1}B^{j}.
+    \end{align*}
+    We have $\Theta_{t} = \bar{\Theta}_{t}$. Therefore $K_{t} = \bar{K}_{t}$.
+\end{proof}
+
+\begin{theorem}
+    \begin{align*}
+        &\contB^{\transpose}(P_{t}^{i}-P_{t}^{j})A = 0,\\
+        &\Theta_{t} \succ 0,
+    \end{align*}
+    and
+    \begin{align*}
+        [R_{t}^{i}]_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j} = ([R_{t}^{i}]_{ji} + B^{j\transpose}P_{t+1}^{j}B^{i})^{\transpose},
+    \end{align*}
+    for $t = 1\cdots T$ and $i\neq j(i,j = 1,\cdots,N)$.
+\end{theorem}
+\begin{proof}
+    At time $T$, set $\bar{Q}_{T} = Q_{T}^{1}$, we have $\contB^{\transpose}\bar{P}_{T}A=\contB^{\transpose}P^{1}_{T}A$.
+    Let 
+    \begin{align}
+        &\bar{R}_{t} = \Theta_{t} - \contB^{\transpose}\bar{P}_{t+1}\contB,\\
+        &\bar{Q}_{t} = Q_{t}^{1} + K_{t}^{\transpose}(R_{t}^{1}-\bar{R}_{t})K_{t}.
+    \end{align}
+    We have
+    \begin{align*}
+        K_{T-1} &= -\Theta_{T-1}^{-1}
+        \begin{bmatrix}
+            B^{1}P_{T}^{1}\\
+            \vdots\\
+            B^{N}P_{T}^{N}
+        \end{bmatrix}A\\
+        &=-(\bar{R}_{T-1}+\contB^{\transpose}\bar{P}_{t+1}\contB)^{-1}\contB^{\transpose}\bar{P}_{T}A\\
+        &=-\bar{K}_{T-1}.
+    \end{align*}
+    Due to $\bar{P}_{T} = P^{1}_{T}$, we have
+    \begin{align*}
+        \bar{P}_{T-1}-P_{T-1}^{1} &= \bar{Q}_{T-1}-Q_{T-1}^{1} + K_{T-1}^{\transpose}(\bar{R}_{T-1}-R_{T-1}^{1})K_{T-1} = 0.
+    \end{align*}
+    The last equality is by the definition of $\bar{Q}_{T-1}$. Then we can proof for any $t$ by induction.
+\end{proof}
+To extend the proof for theorem 7, just simply apply 
+\begin{align*}
+    \Theta_{t}^{-1}
+    \begin{bmatrix}
+        B^{1\transpose}P_{t+1}^{1}\\
+        \vdots\\
+        B^{N\transpose}P_{t+1}^{N}
+    \end{bmatrix}A
+    = \Theta_{t}^{-1}\contB^{\transpose}P_{t+1}^{1}A = \Theta_{t}^{-1}\contB^{\transpose}\bar{P}_{t+1}A = \bar{K}_{t}.
+\end{align*}
+\section{Extension of My Work}
+    The above extension apply to Lemma 1 to 3 of my work. Corollary 1, Assumption 3 can be extended to N-player case trivially. All lemmas and corollary does not rely on the number of players. Lemma 10 is already in the form of N-players. The main theorem can be extended by replacing $\sum_{i=1}^{2}$ to $\sum_{i=1}^{N}$.
+% \section{CONCLUSIONS AND FUTURE WORKS}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{ACKNOWLEDGMENTS}
+
+% The authors gratefully acknowledge the contribution of National Research Organization and reviewers' comments.
+
+\bibliographystyle{plain}
+\bibliography{References}
+\appendix
+\end{document}
+
+
+    
+    

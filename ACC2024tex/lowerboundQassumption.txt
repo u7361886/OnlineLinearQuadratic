@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{appendix}
+\usepackage{graphicx}
+\usepackage{xr}
+\usepackage{verbatim}
+% \externaldocument[aux]{Auxillary.tex}
+\usepackage{subfigure}
+
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{problem}{Problem}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{assumption}{Assumption}
+% \newtheorem{remark}{Remark}
+
+
+% \newcommand{\contTilde}[1]{\mathbf{\tilde{#1}}}
+% \newcommand{\contBar}[1]{\bar{\mathbf{#1}}}
+% \newcommand{\transpose}{\mathsf{T}}
+% \newcommand{\infoat}[1]{\mathcal{H}_{#1}}
+% \newcommand{\opcontrol}[2]{\pi^{*}(#1,\infoat{#2})}
+% \newcommand{\lqr}[3]{{#1}^{\transpose}Q_{#3}{#1}+{#2}^{\transpose}R_{#3}{#2}}
+% \newcommand{\quadx}[2]{{#1}^{\transpose}{#2}{#1}}
+% \newcommand{\gameVars}[2]{(x_{t})_{t=1}^{#1}, (u_{i,t})_{i=1,t=1}^{#2,#1}}
+% \newcommand{\gameVarAtTime}[2]{x_{t},({#1}_{i,t})_{i=1}^{#2}}
+% \newcommand{\gameVarPlayer}[3]{x_{#3},{#1}_{#3}^{#2}, \mathbf{u}_{#3}^{-#2}}
+% \newcommand{\myinner}[1]{\langle(#1)x,x\rangle}
+
+
+\newcommand{\usequence}[2]{(u_{i,t})_{i=1,t=1}^{#1,#2}}
+\newcommand{\contTilde}[1]{\mathbf{\tilde{#1}}}
+\newcommand{\transpose}{\mathsf{T}}
+\newcommand{\myinner}[1]{\langle(#1)x,x\rangle}
+\newcommand{\quadinner}[1]{x^{\transpose}(#1)x}
+\DeclareMathOperator{\Log}{\mathrm{Log}}
+\newcommand{\BK}[1]{\mathbf{B}\bar{K}_{#1}}
+\newcommand{\realR}[1]{\mathbb{R}^{#1}}
+\newcommand{\contu}{\mathbf{u}}
+\DeclareMathOperator{\contB}{\mathbf{B}}
+
+\newtheorem{problem}{Problem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{theorem}{Theorem}
+
+
+\title{On the Regret Analysis of Online Feedback Potential Dynamic Game via Trajectory Prediction and Tracking}
+\author{Yitian Chen}
+% \date{June 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Assumption and Remark}
+We restate the assumption and remark.
+\begin{assumption}\label{assumption:lowerQ}
+    For any given $t \in \mathbb{N}_{T-1}$, matrices $Q_{t}, R_{t}^{1}, R_{t}^{2}$,
+    satisfy
+        $\lambda_{\min}(Q_{t}) > \max(0,\sigma_{max}(\contB)\lambda_{max}([R_{t}^{2}]_{22} - [R_{t}^{1}]_{22}))$.
+\end{assumption}
+\begin{remark}
+    Based the positive definiteness of matrix $Q_{t}$, if Assumption \ref{assumption:lowerQ} holds, if the distance between $R_{t}^{2}$ and $R_{t}^{1}$ needs to be sufficiently small, or $R_{t}^{1}$ `dominates' than $R_{t}^{2}$ for all $t\in \mathbb{N}_{T}$.
+\end{remark}
+
+\section{We don't need conditions on $[R_{t}^{2}]_{11}-[R_{t}^{1}]_{11}$}
+Since 
+\begin{align*}
+    \bar{R}_{t} = 
+    \begin{bmatrix}
+        [R_{t}^{1}]_{11} & [R_{t}^{1}]_{12}\\
+        [R_{t}^{2}]_{21} & [R_{t}^{2}]_{22}
+    \end{bmatrix},
+\end{align*}
+and
+$\bar{Q}_{t} = Q_{t}+ K_{t}^{\transpose}(R_{t}^{1}-\bar{R}_{t})K_{t}$, where $\bar{Q}_{t}$ is the $Q$-matrices we used in the potential game problem. Mathematically, $R_{t}^{1}-\bar{R}_{t}$ is not relevant with $[R_{t}^{2}]_{11}-[R_{t}^{1}]_{11}$. (But the intuition behind that is unclear to me either, this would be clear in N-player case)
+\section{Dominance player}
+One important part of the proof that $\bar{Q}_{t} \succ 0$ is by considering
+\begin{align*}
+    \lambda_{min}(Q_{t}) > \sigma_{max}(B)\lambda_{max}(\bar{R}_{t}-R_{t}^{1}).
+\end{align*}
+If player 1 dominates player 2, then $\lambda_{max}(\bar{R}_{t}-R_{t}^{1}) < 0$. Due to $Q_{t}\succ 0$, the above inequality will be yielded automatically. Therefore we can claim the dominance part in the remark.
+\bibliographystyle{plain}
+\bibliography{References}
+\appendix
+\end{document}
+
+
+    
+    

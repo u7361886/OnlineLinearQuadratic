@@ -1,0 +1,448 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+                                                          % if you need a4paper
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+                                                          % paper
+
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+\overrideIEEEmargins
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+
+
+% The following packages can be found on http:\\www.ctan.org
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{mathptmx} % assumes new font selection scheme installed
+\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+
+
+\newcommand{\usequence}[2]{\{u_{i,t}\}_{i=1,t=1}^{#1,#2}}
+\newcommand{\contTilde}[1]{\mathbf{\tilde{#1}}}
+\newcommand{\transpose}{\mathsf{T}}
+
+\newtheorem{problem}{Problem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+
+\title{\LARGE \bf
+Preparation of Papers for IEEE CSS Sponsored Conferences \& Symposia
+}
+
+%\author{ \parbox{3 in}{\centering Huibert Kwakernaak*
+%         \thanks{*Use the $\backslash$thanks command to put information here}\\
+%         Faculty of Electrical Engineering, Mathematics and Computer Science\\
+%         University of Twente\\
+%         7500 AE Enschede, The Netherlands\\
+%         {\tt\small h.kwakernaak@autsubmit.com}}
+%         \hspace*{ 0.5 in}
+%         \parbox{3 in}{ \centering Pradeep Misra**
+%         \thanks{**The footnote marks may be inserted manually}\\
+%        Department of Electrical Engineering \\
+%         Wright State University\\
+%         Dayton, OH 45435, USA\\
+%         {\tt\small pmisra@cs.wright.edu}}
+%}
+
+\author{Huibert Kwakernaak and Pradeep Misra% <-this % stops a space
+\thanks{This work was not supported by any organization}% <-this % stops a space
+\thanks{H. Kwakernaak is with Faculty of Electrical Engineering, Mathematics and Computer Science,
+        University of Twente, 7500 AE Enschede, The Netherlands
+        {\tt\small h.kwakernaak@autsubmit.com}}%
+\thanks{P. Misra is with the Department of Electrical Engineering, Wright State University,
+        Dayton, OH 45435, USA
+        {\tt\small pmisra@cs.wright.edu}}%
+}
+
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
+For a positive integer $N$, consider the linear systems
+\begin{equation}\label{eq:linsys}
+    x_{t+1} = Ax_{t} + \mathbf{B}\mathbf{u}_{t},
+\end{equation}
+where $t,i$ are nonegative integers, $m$ and $n$ are positive integers, $A \in \mathbb{R}^{n\times n}$, $\mathbf{B} := [B^{1},\cdots, B^{N}]$, $B^{i} \in \mathbb{R}^{n\times m}$, $\mathbf{u}_{t} = [u_{1,t}^{\transpose},\cdots,u_{N,t}^{\transpose}]^{\transpose}$, $x_t\in\mathbb{R}^n$, and $x_{1} =\bar{x}_{1}$ for some $\bar{x}_1 \in \mathbb{R}^{n}$, and $u_{t} \in \mathbb{R}^{m}$.
+Define the following notations
+\begin{align}
+    &\{u_{i,t}\}_{i=1,t=1}^{N,T-1} := \{u_{1,1},\cdots,u_{N,1},\cdots, u_{1,T-1},\cdots,u_{N,T-1}\},\\
+    \begin{split}
+         &\{u_{i,t}\}_{i=1,t=1}^{N,\tau-1} \frown \{v_{i,t}\}_{i=1,t=\tau}^{N,T-1}:=\{u_{1,1},\cdots,u_{1,\tau-1},v_{1,\tau},\cdots,\\
+    &\qquad v_{1,T-1},\cdots,u_{N,1},\cdots,u_{N,\tau-1},v_{N,\tau},\cdots,v_{N,T-1} \},
+    \end{split}
+   \\ 
+   & R_{t}^{i} := 
+   \begin{bmatrix}
+       [R_{t}^{i}]_{11} & \cdots & [R_{t}^{i}]_{1N}\\
+       \vdots & \vdots & \vdots\\
+       [R_{t}^{i}]_{N1} & \cdots & [R_{t}^{i}]_{NN}
+   \end{bmatrix},\\
+    \label{eq:history}
+    &\mathcal{H}_{T} := \{ \bar{x}_{1},\{Q_{t}^{i}\}_{i=1,t=1}^{N,T},\{R_{t}^{i}\}_{i=1,t=1}^{N,T-1}\},\\
+    &g_{i,t}(x_{t}, \mathbf{u}_{t}) := \frac{1}{2}(x_{t}^{\mathsf{T}}Q_{t}^{i}x_{t} + 
+    \mathbf{u}_{t}^{\transpose}R_{t}^{i}\mathbf{u}_{t}),\\
+    &g_{i,T}(x) := \frac{1}{2} x^{\mathsf{T}}Q_{T}^{i}x,
+\end{align}
+where for all $1 \leq t \leq T$ and $1\leq i,j\leq N$, $Q_{t}^{i}$ is symmetric, positive semi-definite, $R_{t}^{i,j}$ is positive definite. We again define
+\begin{equation}
+    J_{i,T}(\{x_{t}\}_{t=1}^{T},\{u_{i,t}\}_{i=1,t=1}^{N,T-1}) := \sum_{t=1}^{T-1} g_{i,t}(x_{t}, \mathbf{u}_{t}) + g_{i,T}(x_{T}).
+\end{equation}
+
+Before we start the discussion of feedback Nash equilibrium, we use $\{u_{i,t}^{*}\}_{i=1,t=1}^{N,T-1}$ to denote the control sequence for feedback Nash equilibrium, and $\{u_{i,t}\}_{i=1,t=1}^{N,T-1}$ is sequence that consisted by arbitrary control vectors for each players. 
+
+Furthermore, for $1 \leq \tau \leq T$, $\{x_{t}^{*\tau}\}_{t=1}^{T}$ is generated by the sequence of $\{u_{i,t}\}_{i=1,t=1}^{N,\tau-1} \frown \{u_{i,t}^{*}\}_{i=1,t=\tau}^{N,T}$, where $u_{i,t}$ can be an arbitrary vector from $\mathbb{R}^{m}$ for $1 \leq i \leq N$ and $1 \leq t \leq T$. Moreover, for $1 \leq \tau \leq T$ and $1 \leq i \leq N$, $\{x_{t}^{(i,K)}\}_{t=1}^{T}$ is generated by $\{u_{i,t}\}_{i=1,t=1}^{N,\tau-1} \frown \{u_{1,\tau}^{*},\dots, u_{i,\tau},\dots,u_{N,\tau}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=\tau+2}^{N,T}$. 
+
+The sequence $\{ u_{i,t}^{*}\}_{i=1,t=1}^{N,T}$ satisfy that, for any fix $i$ that $1 \leq i \leq N$, such 
+sequence satisfy that 
+\begin{equation}\label{eq:nashIneq}
+    \begin{split}
+        \text{Level T}
+        &\begin{cases}
+            &J_{1,T}(\{x_{t}^{*T}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T}^{*},u_{2,T}^{*},\dots,u_{N,T}^{*}\}) \\ & \leq J_{1,T}(\{x_{t}^{(1,T)}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T},u_{2,T}^{*},\dots,u_{N,T}^{*}\}),\\ \\
+            &J_{2,T}(\{x_{t}^{*T}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T}^{*},u_{2,T}^{*},\dots,u_{N,T}^{*}\}) \\ & \leq J_{2,T}(\{x_{t}^{(2,T)}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T}^{*},u_{2,T},\dots,u_{N,T}^{*}\}),\\
+            & \qquad \qquad \vdots \\
+            &J_{N,T}(\{x_{t}^{*T}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T}^{*},u_{2,T}^{*},\dots,u_{N,T}^{*}\}) \\ & \leq J_{N,T}(\{x_{t}^{(N,T)}\}_{t=1}^{T}, \{u_{i,t}\}_{i=1,t=1}^{N,T-2} \frown \{u_{1,T}^{*},u_{2,T}^{*},\dots,u_{N,T}\}).
+        \end{cases}
+    \\ &\qquad \qquad \qquad \vdots \\
+    \text{Level 1}
+        &\begin{cases}
+            &J_{1,T}(\{x_{t}^{*1}\}_{t=1}^{T}, \{u_{1,1}^{*},u_{2,1}^{*},\dots,u_{N,1}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}) \\ & \leq J_{1,T}(\{x_{t}^{(1,1)}\}_{t=1}^{T}, \{u_{1,1},u_{2,1}^{*},\dots,u_{N,1}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}),\\ \\
+            &J_{2,T}(\{x_{t}^{*1}\}_{t=1}^{T}, \{u_{1,1}^{*},u_{2,1}^{*},\dots,u_{N,1}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}) \\ & \leq J_{2,T}(\{x_{t}^{(2,1)}\}_{t=1}^{T}, \{u_{1,1}^{*},u_{2,1},\dots,u_{N,1}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}),\\
+            & \qquad \qquad \vdots \\
+            &J_{N,T}(\{x_{t}^{*1}\}_{t=1}^{T}, \{u_{1,1}^{*},u_{2,1}^{*},\dots,u_{N,1}^{*}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}) \\ & \leq J_{N,T}(\{x_{t}^{(N,1)}\}_{t=1}^{T}, \{u_{1,1}^{*},u_{2,1}^{*},\dots,u_{N,1}\} \frown \{u_{i,t}^{*}\}_{i=1,t=2}^{N,T-1}).
+        \end{cases}
+    \end{split}
+\end{equation}
+For convenient use later, we define the notion of $\text{DFLGame}$ as
+\begin{equation}\label{eq:regret}
+ (\{x_{t}^{*1}\}_{t=1}^{T}, \{u_{i,t}^{*}\}_{i=1,t=1}^{N,T}) := \text{DFLGame}(\mathcal{H}_{T},T).
+\end{equation}
+For any decisions $\usequence{N}{T-1}$ and the associated state sequence $\{x_{t}\}_{t=1}^{T}$, the dynamic social regret is defined as
+\begin{equation}
+    \begin{split}
+        &\text{Regret}_{T}(\{\mathbf{u}_{t}\}_{t=1}^{T-1}) := \\
+        &\sum_{i=1}^{N} J_{i,T}(\{x_{t}\}_{t=1}^{T},\{u_{i,t}\}_{i=1,t=1}^{N,T-1}) - J_{i,T}(\{x_{t}^{*}\}_{t=1}^{T},\{u_{i,t}^{*}\}_{i=1,t=1}^{N,T-1}).
+    \end{split}
+\end{equation}
+
+
+The key contributions of this paper are
+\begin{itemize}
+    \item The proposal of a method to solve a online LQ potential game;
+    \item Development of the social-regret upperbound;
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PROBLEM FORMULATION}
+\begin{assumption}\label{Assumption:bounds}
+    For any given $p,q(p={1,2}\text{ and }q={1,2})$, there exists positive definite matrices $Q_{min}, Q_{max}, R_{min}, R_{max}$ that
+    \begin{equation}
+        Q_{min} \preceq Q_{t} \preceq Q_{max},
+    \end{equation}
+    for $1\leq t \leq T$, and
+    \begin{equation}
+        R_{min} \preceq [R_{t}^{p}]_{p,q} \preceq R_{max},
+    \end{equation}
+    for $1 \leq t \leq T-1$.
+\end{assumption}
+In this paper, we consider the following problem
+\begin{problem}[Online Dynamic LQ Game]
+     Consider the controllable system \eqref{eq:linsys}. Let the cost matrices in \eqref{eq:regret} satisfy Assumption \ref{assumption:cost} for any given $T \geq 1$ and $W < T-1$. At time $0 \leq t \leq T-W-1$, the available information to the decision maker is given by $\mathcal{H}_{t}$ as defined in \eqref{eq:history} and the current state $x_{t}$. It is desired to design a control policy $\pi(\cdot, \cdot)$ of the form \eqref{eq:policyForm} that yields a regret, as defined by \eqref{eq:regret}, that is independent of the bounds given in Assumption \ref{assumption:cost}.
+\end{problem}
+
+\section{APPROACH AND REGRET ANALYSIS}
+In the following sections, we consider the special case of $N = 2$. 
+\paragraph{Prediction. } 
+Define
+\begin{equation}
+    [\bar{R}_{t}]_{pq} := [R_{t}^{p}]_{pq},
+\end{equation}
+for $1 \leq p,q \leq 2$. Given a preview window length $W$, define
+\begin{equation}
+\begin{split}
+    \Pi_{\tau|t}(x_{\tau},\mathbf{u}_{\tau}) := 
+    \begin{cases}
+        \frac{1}{2} (x_{\tau}^{\transpose}Q_{\tau}x_{\tau} +  \mathbf{u}_{\tau}^{\transpose}\bar{R}_{\tau}\mathbf{u}_{\tau}) \text{\quad if $\tau \leq t+W$}\\
+        \frac{1}{2} (x_{\tau}^{\transpose}Q_{t}x_{\tau} + \mathbf{u}_{\tau}^{\transpose}\bar{R}_{t+W}\mathbf{u}_{\tau}) \text{\quad if $t+W \leq \tau \leq T-1$}.
+    \end{cases}
+\end{split}
+\end{equation}
+
+At each time $t$, we plan an optimal trajectory starting from the initial state $\bar{x}_{1}$ using the known cost matrices up to time $t+W$ and setting all the future matrices to be equal to their known values for time $t+W$.
+
+Specifically, at time $t$ where $0\leq t < T-W$, define $\Psi_{t}(\cdot,\cdot)$ as
+\begin{align}
+\Psi_{t}(\{\xi_{\tau}\}_{\tau=1}^{T},\{\boldsymbol{\upsilon}_{\tau}\}_{\tau=1}^{T-1}) &:= \sum_{\tau=1}^{T-1} \Pi_{\tau|t}(\xi_{\tau},\boldsymbol{\upsilon}_{\tau}) + \frac{1}{2} \xi_{T}^{\transpose}Q_{t+W}\xi_{T},
+\end{align}
+and 
+\begin{equation}
+    \Psi_{t}(\{\xi_{\tau}\}_{\tau=1}^{T},\{\boldsymbol{\upsilon}_{\tau}\}_{\tau=1}^{T-1}) = J_{t}(\{\xi_{\tau}\}_{\tau=1}^{T},\{\boldsymbol{\upsilon}_{\tau}\}_{\tau=1}^{T-1}),
+\end{equation}
+for $T-W \leq t \leq T-1$.
+Then, we find the predicted optimal control sequence for all $0\leq \tau\leq T-1$ by solving
+\begin{equation}
+\begin{split}
+    (\{x_{\tau|t}\}_{\tau=1}^{T}, \{\mathbf{u}_{\tau|t}\}_{\tau=1}^{T-1}) \in &\arg\min_{\{\xi_{\tau}\}_{\tau=1}^{T},\{\upsilon_{\tau}\}_{\tau=1}^{T-1}} \Psi_{t}(\{\xi_{\tau}\}_{\tau=1}^{T},\{\upsilon_{\tau}\}_{\tau=1}^{T-1}),\\
+    &\text{subject to}\quad \xi_{\tau+1} = A\xi_{\tau} + \mathbf{B}\mathbf{\upsilon_{\tau}}, \xi_{1} = \bar{\xi}_{1}.
+\end{split}
+\end{equation}
+
+\paragraph{Prediction Tracking. } We propose the following feedback control policy
+\begin{equation}
+    \pi(x_{t},\mathbf{H}_{t}) := \mathbf{K}(x_{t}-x_{t|t}) + \mathbf{u}_{t|t},
+\end{equation}
+where $\mathbf{K}\in \mathbb{R}^{m\times n}$ is a control matrix such that $\rho(A+\mathbf{B}\mathbf{K}) < 1$, and $\rho(\cdot)$ denotes the matrix spectral radius.
+
+
+\subsection{Regret Analysis}
+
+\begin{definition}
+    The dynamic game is referred to as a feedback potential difference game(FPDG) if there exist an optimal control problem (OCP) such that the solution of the OCP, in feedback form, provides a feedback Nash equlibrium for the linear quadratic dynamic game. 
+\end{definition}
+
+\begin{lemma}
+    If the cost matrices $Q_{t}$, $R_{t}^{i}$ satisfy the following,
+    \begin{enumerate}
+        \item for time instant $t$ from $T-1$ to 1, $R_{t}^{1},R_{t}^{2},Q_{t}$ satisfy
+        \begin{equation}\label{eq:costFPDG1}
+            [R_{t}^{1}]_{12} + B^{1\transpose}P_{t+1}^{1}B^{2} = ([R_{t}^{2}]_{21} + B^{2\transpose}P_{t+1}^{2}B^{1})^{\transpose}.
+        \end{equation}
+        Define
+        \begin{equation}\label{eq:Theta}
+        [\Theta_{t}]_{ij} := [R_{t}]^{i}_{ij} + B^{i\transpose}P_{t+1}^{i}B^{j},
+        \end{equation}
+        we require
+        \begin{equation}
+            \Theta_{t} \succ 0,
+        \end{equation}
+        \begin{equation*}
+            \mathbf{B}^{\transpose}(P_{t}^{1}-P_{t}^{2})A=0.
+        \end{equation*}
+        \item at time instant 1: $(R_{1}^{1},R_{1}^{2})$ satisfy
+        \begin{equation}
+            [R_{1}^{1}]_{12} + B^{1\transpose}P_{1}^{1}B^{2} = ([R_{1}^{2}]_{21} + B^{2\transpose}P_{1}^{2}B^{1})^{\transpose},
+        \end{equation}
+        \begin{equation}\label{eq:costFPDG2}
+            \Theta_{1} \succ 0.
+        \end{equation}
+    \end{enumerate}
+    Then, the dynamic game is a feedback potential difference game(FPDG).
+\end{lemma}
+The above lemma is a special case of \cite{}[Theorem 6] when $Q_{t}^{1}=Q_{t}^{2}$ for $t(1\leq t \leq T)$.
+
+\begin{lemma}[Not sure if its correct]
+    Suppose the cost matrices $\{Q_{t}\}_{t=1}^{T}$ and $\{R_{t}^{i}\}_{t=1,i=1}^{T-1,2}$ satisfy the conditions described from \eqref{eq:costFPDG1} to \eqref{eq:costFPDG2}.
+    For a given preview horizon $W(0\leq W \leq T-1)$, define
+    \begin{equation}
+        Q_{\tau|t}:= 
+        \begin{cases}
+            Q_{\tau} \text{ if $1\leq \tau \leq t+W$}\\
+            Q_{t+w} \text{ if $t+W < \tau \leq T$},
+        \end{cases}
+    \end{equation}
+    and
+    \begin{equation}
+        R_{\tau|t}^{i}:= 
+        \begin{cases}
+            R_{\tau}^{i} \text{ if $1\leq \tau \leq t+W$}\\
+            R_{t+w}^{i} \text{ if $t+W < \tau \leq T$},
+        \end{cases}
+    \end{equation}
+    for $i = {1,2}$.
+    We further suppose matrices $\{Q_{t}\}_{t=1}^{T}$ and $\{R_{t}^{i}\}_{t=1,i=1}^{T-1,2}$ satisfy Assumption \ref{Assumption:bounds}, then we expect there exists matrices $P_{min},P_{max}(\|P_{min}\|,\|P_{max}\|<\infty)$ that
+    \begin{equation*}
+        P_{min} \preceq P_{t}^{i} \preceq P_{max},
+    \end{equation*}
+    for $i = \{1,2\}$.
+\end{lemma}
+\begin{assumption}
+    For any given $t(1\leq t \leq T-1)$, matrices $Q_{t}, R_{t}^{1}, \bar{R}_{t}$ satisfy
+    \begin{equation}
+        \lambda_{min}(Q_{t}) \geq \lambda_{\min}(\bar{R}_{t}-R_{t}^{1}).
+    \end{equation}
+\end{assumption}
+
+\begin{lemma}
+    
+\end{lemma}
+
+
+% \begin{lemma}[Not sure again]
+%     If the above lemma is true, we expect there exists $\bar{Q}_{min},\bar{Q}_{max}(\|\bar{Q}_{min}\|,\|\bar{Q}_{max}\|<\infty)$ that
+%     \begin{equation*}
+%         \bar{Q}_{min} \preceq \bar{Q}_{t} \preceq \bar{Q}_{max},
+%     \end{equation*}
+%     for $1\leq t \leq T$. Which
+%     \begin{equation*}
+%         \bar{Q}_{t} = Q_{t}+ \mathbf{K}_{t}^{\transpose}(R_{t}^{1}-\bar{R}_{t})\mathbf{K}_{t},
+%     \end{equation*}
+%     $\Theta_{t}$ is defined by \eqref{eq:Theta}
+%     and $\mathbf{K}_{t}$ is defined by
+%     \begin{equation*}
+%         \mathbf{K}_{t} = -(\Theta_{t}^{-1})
+%         \begin{bmatrix}
+%             B^{1\transpose}P_{t+1}^{1} \\
+%             B^{2\transpose}P_{t+1}^{2}
+%         \end{bmatrix}A.
+%     \end{equation*}
+%     Which
+%     \begin{equation*}
+%         P_{t}^{i} = Q_{t} + \mathbf{K}_{t}^{\transpose}R_{t}^{i}\mathbf{K}_{t} + (A+\mathbf{B}\mathbf{K}_{t})^{\transpose}P_{t+1}^{i}(A+\mathbf{B}\mathbf{K}_{t}),
+%     \end{equation*}
+%     for $i = \{1,2\}$, $1\leq t \leq T-1$, and
+%     \begin{equation*}
+%         P_{T}^{i} = Q_{T},
+%     \end{equation*}
+%     for $i = \{1,2\}$,
+%     recursively.
+% \end{lemma}
+
+\begin{definition}
+    For any positive definite matrices $X,Y$, define the operator $\delta_{\infty}(\cdot, \cdot)$ as
+    \begin{equation*}
+        \delta_{\infty}(X, Y) := (\sum_{i=1}^{d} log^{2}(\lambda_{i}))^{\frac{1}{2}},
+    \end{equation*}
+    where $\lambda_{1},\cdots, \lambda{d}$ are the eigenvalues of the matrix $XY^{-1}$.
+\end{definition}
+% \begin{lemma}
+%     For any positive definite matrices $T,S,V_{1},V_{2}$, suppose $\lambda_{min}(S+V_{2}-T-V_{1}) > 0$. There exists a positive definite $\bar{V}$ that 
+%     \begin{equation*}
+%         \delta_{\infty}(T+V_{1}, S+V_{2}) \leq \delta_{\infty}(T+\bar{V},S+\bar{V}).
+%     \end{equation*}
+% \end{lemma}
+% \begin{proof}
+%     Construct $\bar{V}$ such that
+%     \begin{equation}\label{eq:barV}
+%         \lambda(\bar{V}) \geq \frac{\lambda_{max}(V_{1})\lambda_{max}(S)-\lambda_{min}(V_{2})\lambda_{min}(T)}{\lambda_{min}(S+V_{2}-T-V_{1})},
+%     \end{equation}
+%     and
+%     \begin{equation}
+%         \lambda(\bar{V}) > 0.
+%     \end{equation}
+%     Then we have
+%     \begin{align*}
+%         (x^{\transpose}\bar{V}x)(x^{\transpose}[S+V_{2}-T-V_{1}]x) &\geq \lambda(\bar{V})\lambda_{min}(S+V_{2}-T-V_{1})\\
+%         &\geq \lambda_{max}(V_{1})\lambda_{max}(S)-\lambda_{min}(V_{2})\lambda_{min}(T) \\
+%         &\geq (x^{\transpose}V_{1}x)(x^{\transpose}Sx)-(x^{\transpose}Tx)(x^{\transpose}V_{2}x),
+%     \end{align*}
+%     for all $\|x\| = 1$. Rearrange the equation above, we have
+%     \begin{align*}
+%         &(x^{\transpose}\bar{V}x)(x^{\transpose}[S+V_{2}]x) + (x^{\transpose}Tx)(x^{\transpose}V_{2}x) + (x^{\transpose}Tx)(x^{\transpose}Sx) \geq \\
+%         &(x^{\transpose}V_{1}x)(x^{\transpose}Sx) + (x^{\transpose}\bar{V}x) + (x^{\transpose}(T+V_{1}))x) + (x^{\transpose}Tx)(x^{\transpose}Sx),
+%     \end{align*}
+%     for any $\|x\| = 1$. The above is achieved by adding term $(x^{\transpose}Tx)(x^{\transpose}Sx)$ to both sides.
+%     We further simplify the above inequality, we have that
+%     \begin{align*}
+%         (x^{\transpose}(T+\bar{V})x)((x^{\transpose}(S+V_{2})x)) \geq (x^{\transpose}(S+\bar{V})x)((x^{\transpose}(T+V_{1})x)).
+%     \end{align*}
+%     Thus,
+%     \begin{equation}
+%         \frac{x^{\transpose}(T+\bar{V})x}{x^{\transpose}(S+\bar{V})x} \geq \frac{x^{\transpose}(T+V_{1})x}{x^{\transpose}(S+V_{2})x}.
+%     \end{equation}
+%     By applying the maximum operator $\max_{\|x\|=1}$ to both sides of the inequality above, we can thus conclude that
+%     \begin{align*}
+%         \delta_{\infty}(T+\bar{V},S+\bar{V}) \geq \delta_{\infty}(T+V_{1},S+V_{2}).
+%     \end{align*}
+% \end{proof}
+
+
+\begin{corollary}
+    If the above lemmas hold. For $1\leq t, t_{0} \leq T$, 
+    if $\lambda_{min}() \neq 0$, then there exists a positive definite matrix $\underbar{Q}_{\tau|t,t_{0}}$ that
+    \begin{align*}
+        &\delta_{\infty}(\bar{P}_{\tau|t},\bar{P}_{\tau|t_{0}})\\
+        &\quad \leq \delta_{\infty}(Q_{\tau|t}+\cdots,Q_{\tau|t_{0}}+\cdots)\\
+        &\quad \leq \delta_{\infty}(\bar{Q}_{\tau|t,t_{0}}+\cdots,\bar{Q}_{\tau|t,t_{0}}+\cdots)\\
+        &\quad \leq \delta_{\infty}(\bar{P}_{\tau+1|t},\bar{P}_{\tau+1|t_{0}}).
+    \end{align*}
+\end{corollary}
+By using the above relations, we can further derive the upper bound of $\mathbf{K}_{\tau|t} - \mathbf{K}_{\tau|t_{0}}$. Next, if the relation below
+\begin{align*}
+    \|\prod_{\tau = 1}^{t} (A+\mathbf{B}\mathbf{K}_{\tau|t})\| \leq C\eta^{t}
+\end{align*}
+for some $\eta(0<\eta<1)$, we can apply similar procedures to derive the regret bound as we did in the L4DC paper.
+
+
+
+
+% \begin{lemma}
+%     The regret can be written as
+%     \begin{equation}
+%         \text{Regret}_{T}(\{\mathbf{u}_{t}\}_{t=1}^{T-1}) = \frac{1}{2}\sum_{t=1}^{T-1} x_{t}^{\transpose}Q_{t}x_{t} + \mathbf{u}_{t}^{\transpose}\tilde{\mathbf{R}}_{t}\mathbf{u}_{t} - x_{t}^{*\transpose}Q_{t}x_{t}^{*} - \mathbf{u}_{t}^{*\transpose}\tilde{\mathbf{R}}_{t}\mathbf{u}_{t}^{*},
+%     \end{equation}
+%     where 
+%     \begin{align*}
+%         \tilde{\mathbf{R}}_{t} = 
+%         \begin{pmatrix}
+%             \sum_{j=1}^{N} R_{t}^{j,1} & 0 & \cdots & 0\\
+%             0 & \sum_{j=1}^{N} R_{t}^{j,2} & \cdots & 0\\
+%             \vdots& \vdots & \vdots & \vdots\\
+%             0 & \cdots & 0 & \sum_{j=1}^{N} R_{t}^{j,N}
+%         \end{pmatrix}
+%     \end{align*}
+% \end{lemma}
+
+% \begin{lemma}
+%     Suppose matrices $Q_{t}$ and $\tilde{\mathbf{R}}_{t}$ are lower and upper bounded by $Q_{min},Q_{max},\contTilde{R}_{min},\contTilde{R}_{max}$, the regret can be upperbounded by
+%     \begin{equation}
+%         \text{Regret}_{T}(\{\mathbf{u}_{t}\}_{t=1}^{T-1}) \leq \frac{1}{2}\sum_{t=1}^{T-1} \|Q_{max}\|\|x_{t}-x_{t}^{*}\|^2 + \|\contTilde{R}_{max}\|\|\mathbf{u}_{t}-\mathbf{u}_{t}^{*}\|^2
+%     \end{equation}
+% \end{lemma}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{NUMERICAL SIMULATIONS}
+
+\section{CONCLUSIONS AND FUTURE WORKS}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ACKNOWLEDGMENTS}
+
+The authors gratefully acknowledge the contribution of National Research Organization and reviewers' comments.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
+
+\begin{thebibliography}{99}
+
+\bibitem{c1}
+J.G.F. Francis, The QR Transformation I, {\it Comput. J.}, vol. 4, 1961, pp 265-271.
+
+\bibitem{c2}
+H. Kwakernaak and R. Sivan, {\it Modern Signals and Systems}, Prentice Hall, Englewood Cliffs, NJ; 1991.
+
+\bibitem{c3}
+D. Boley and R. Maier, "A Parallel QR Algorithm for the Non-Symmetric Eigenvalue Algorithm", {\it in Third SIAM Conference on Applied Linear Algebra}, Madison, WI, 1988, pp. A20.
+
+\end{thebibliography}
+
+\end{document}
