@@ -43,7 +43,8 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     figure
     imagesc(previewHorizon:T,0:previewHorizon-1,(regAvg(:,previewHorizon:T)))
     colorbar
-    set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
     curtick = get(gca, 'xTick');
     xticks(unique(round(curtick)));
@@ -55,8 +56,8 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
 %     size2 = 1050;
     figure
     plot(max(d,previewHorizon):T,log(regAvg(window1,max(d,previewHorizon):T)), 'LineWidth',4)
-    set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gcf,'Position',[100,100,size1,size2])
+    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+        set(gcf,'Position',[100,100,size1,size2])
 %     curtick = get(gca, 'xTick');
 %     xticks(unique(round(curtick)));
     xlabel('Time Horizon','FontSize',xfontsize)
@@ -66,7 +67,8 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     
     figure
     plot(max(d,previewHorizon):T,log(regAvg(window2,max(d,previewHorizon):T)), 'LineWidth',4)
-    set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Time Horizon','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
@@ -76,7 +78,8 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     plot(0:1:previewHorizon-1,log(abs(regAvg(:,time1))), 'LineWidth',4)
     curtick = get(gca, 'xTick');
     xticks(unique(round(curtick)));
-    set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Preview Window','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
@@ -86,7 +89,8 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
     plot(0:previewHorizon-1,log(abs((regAvg(:,time2)))), 'LineWidth',4)
     curtick = get(gca, 'xTick');
     xticks(unique(round(curtick)));
-    set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Preview Window','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)

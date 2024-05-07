@@ -7,15 +7,8 @@ function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
 
     %deadbeat matrix
     DB = zeros(n,d*m);
-    DBi = B;
-    for i = m*(d-1)+1:-m:1
-        DB(1:n,i:(i+m-1)) = DBi;
-        DBi = A*DBi;
-    end
-    tempDB = DB'*DB;
-%     DBG = inv()*DB';
-%     size(DBG)
-%     DB
+    for 
+    
     for t = 1:d:T
         ind = (t+W)*(t+W <= T) + T*(t+W>T);
         if(ind == T)
@@ -39,18 +32,12 @@ function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
         end
         %find expected trajectory
         xexpect = x0;
-        for tau = 1:min(t+d-1,T-1)
-            if(tau <= t)
-                xexpect = (A + B*K(:,:,tau))*xexpect + w(:,tau);
-            else
-                xexpect = (A + B*K(:,:,tau))*xexpect;
-            end
+        for tau = 1:t
+            xexpect = (Axecpect + B*K(:,:,tau))*xexpect + w(:,tau);
         end
-        dBGain = tempDB\(DB'*(xexpect-A^(d)*x1(:,t)));
-%         size(dBGain)
+   
         for n = 0:min(d-1,T-t-1)
-%             u1(:,t+n) = K(:,:,t+n)*x1(:,t+n);
-            u1(:,t+n) = dBGain(1+n:n+m);
+            u1(:,t+n) = K(:,:,t+n)*x1(:,t+n);
             x1(:,t+n+1) = A*x1(:,t+n) + B*u1(:,t+n) + w(:,t+n);
         end
     end

@@ -10,16 +10,17 @@ function [costAvgMeFix, costAvgNash, relativeAvg] = experimentOnlineGame(T,previ
     m = 1;
     strInd = 0;
     %% Experiments
-   parfor numExp = 1:numMonte
+   for numExp = 1:numMonte
 %         tic;
         %% Dynamic Games
         tempRelativeNash = zeros(previewHorizon,T);
         tempRelativeMe = zeros(previewHorizon,T);
         a = 1.6;
         b = 10*rand(NPlayers,1);
+%         b = [0.85;0.89];
         [A,B,~] = DGSystemsGenerator(a,b,n,m,NPlayers);
-        qrangeLower = 1;
-        qrangeHigher = 10;
+        qrangeLower = 10;
+        qrangeHigher = 110;
         lambda = 0.8;
         [Q,R] = DGCostGenerator(qrangeLower,qrangeHigher,b,n,m,NPlayers,T);
         K0 = DGTrackingController(lambda,a,b,NPlayers);
@@ -38,6 +39,10 @@ function [costAvgMeFix, costAvgNash, relativeAvg] = experimentOnlineGame(T,previ
                 tempRelativeMe = tempRelativeMe + tempAdd;
             end
             [xNash,uNash] = nashDGFB2(Q,R,A,B,w,t,x0,n,m,NPlayers);
+%             for tau = t-1:-1:1
+%                 tau
+%                 norm(xNash(:,tau+1),2)/norm(xNash(:,tau),2)
+%             end
             tempNash = zeros(previewHorizon,T);
             tempNash(:,t) = repmat(NECost(xNash,uNash,Q,R,t,NPlayers),previewHorizon,1);
             costAvgNash = costAvgNash + tempNash;

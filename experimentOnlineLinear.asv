@@ -20,7 +20,7 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
         n = 4;
         m = 1;
     end
-    parfor numExp = 1:numMonte
+    for numExp = 1:numMonte
         warning('off','all')
         %% Linear System onedim
         if(strcmp("pendulum",typeSystem))
@@ -38,7 +38,7 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
             w = wMag*randn(n,T);
             x0 = 10*rand(n,1);
         %% Online Control Result
-        for W = strInd:d:previewHorizon-1
+        for W = strInd:previewHorizon-1
             for t = previewHorizon:T
                 %% Onedim Linear
                 tempAdd = zeros(previewHorizon,T);

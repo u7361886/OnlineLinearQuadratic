@@ -8,18 +8,26 @@ numThreads = 10;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 % maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
-numMonte = 100*numThreads;
+numMonte = 10*numThreads;
 wMag = 0;
 %% pendulum system
 tic
 %[regAvgMeFixTrackingPendulum,regAvgMeFixOnestepPendulum,regAvgLiPendulum,regAvgJingtaoPendulum] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
-[costTracking,costOnestep,costLina,costJingtao,costNash] = experimentOnlineLinear(T,previewHorizon,numMonte,typeSystem,wMag,n,m);
+[costTrackingPendulum,costLinaTrackingPendulum,costJingtaoPendulum,costNashTrackingPendulum] = experimentOnlineLinear(T,previewHorizon,numMonte,typeSystem,wMag,n,m);
 
-save('.\regrets\costAvgMeFixTrackingPendulum.mat','costAvgMeFixTrackingPendulum')
-save('.\regrets\costAvgMeFixOnestepPendulum.mat','costAvgMeFixOnestepPendulum')
-save('.\regrets\costAvgLiPendulum.mat','costAvgLiPendulum')
-save('.\regrets\costAvgJingPendulum.mat','costAvgJingPendulum')
-save('.\regrets\costAvgNashPendulum.mat','costAvgNashPendulum')
+regTrackingPendulum = costTrackingPendulum-costNashTrackingPendulum;
+regLiPendulum = costLinaTrackingPendulum-costNashTrackingPendulum;
+regJingtaoPendulum = costJingtaoPendulum-costNashTrackingPendulum;
+
+save('.\regrets\regTrackingPendulum.mat','regTrackingPendulum')
+save('.\regrets\regLiPendulum.mat','regLiPendulum')
+save('.\regrets\regJingtaoPendulum.mat','regJingtaoPendulum')
+
+% save('.\regrets\costAvgMeFixTrackingPendulum.mat','costAvgMeFixTrackingPendulum')
+% % save('.\regrets\costAvgMeFixOnestepPendulum.mat','costAvgMeFixOnestepPendulum')
+% save('.\regrets\costAvgLiPendulum.mat','costAvgLiPendulum')
+% save('.\regrets\costAvgJingPendulum.mat','costAvgJingPendulum')
+% save('.\regrets\costAvgNashPendulum.mat','costAvgNashPendulum')
 
 % save('.\regrets\regAvgMeFixTrackingPendulum.mat','regAvgMeFixTrackingPendulum')
 % save('.\regrets\regAvgMeFixOnestepPendulum.mat','regAvgMeFixOnestepPendulum')
@@ -29,34 +37,116 @@ toc
 tic
 n = 4;
 m = 1;
-[regAvgMeFixTrackingRandom,regAvgMeFixOnestepRandom,regAvgLiRandom,regAvgJingtaoRandom] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
-% save('.\regrets\regAvgMeFixTrackingRandom.mat','regAvgMeFixTrackingRandom')
-% save('.\regrets\regAvgMeFixOnestepRandom.mat','regAvgMeFixOnestepRandom')
-% save('.\regrets\regAvgLiRandom.mat','regAvgLiRandom')
+[costTrackingRandom,costLiRandom,costJingtaoRandom,costNashRandom] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
+
+
+save('.\regrets\regAvgMeFixTrackingRandom.mat','regAvgMeFixTrackingRandom')
+save('.\regrets\regAvgJingtaoRandom.mat','regAvgJingtaoRandom')
+save('.\regrets\regAvgLiRandom.mat','regAvgLiRandom')
 toc
 %% disturbance 
 wMag = 1;
 tic
-[regAvgMeFixTrackingPendulumDisturbance,regAvgMeFixOnestepPendulumDisturbance,regAvgLiPendulumDisturbance,regAvgJingtaoPendulumDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
-% save('.\regrets\regAvgMeFixTrackingPendulumDisturbance.mat','regAvgMeFixTrackingPendulumDisturbance')
-% save('.\regrets\regAvgMeFixOnestepPendulumDisturbance.mat','regAvgMeFixOnestepPendulumDisturbance')
-% save('.\regrets\regAvgLiPendulumDisturbance.mat','regAvgLiPendulumDisturbance')
+[regAvgMeFixTrackingPendulumDisturbance,regAvgLiPendulumDisturbance,regAvgJingtaoPendulumDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
+save('.\regrets\regAvgMeFixTrackingPendulumDisturbance.mat','regAvgMeFixTrackingPendulumDisturbance')
+save('.\regrets\regAvgJingtaoPendulumDisturbance.mat','regAvgJingtaoPendulumDisturbance')
+save('.\regrets\regAvgLiPendulumDisturbance.mat','regAvgLiPendulumDisturbance')
 toc
 %%
 tic
 n = 4;
 m = 1;
-[regAvgMeFixTrackingRandomDisturbance,regAvgMeFixOnestepRandomDisturbance,regAvgLiRandomDisturbance,regAvgJingtaoRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
-% save('.\regrets\regAvgMeFixTrackingRandomDisturbance.mat','regAvgMeFixTrackingRandomDisturbance')
-% save('.\regrets\regAvgMeFixOnestepRandomDisturbance.mat','regAvgMeFixOnestepRandomDisturbance')
-% save('.\regrets\regAvgLiRandomDisturbance.mat','regAvgLiRandomDisturbance')
+[regAvgMeFixTrackingRandomDisturbance,regAvgLiRandomDisturbance,regAvgJingtaoRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
+save('.\regrets\regAvgMeFixTrackingRandomDisturbance.mat','regAvgMeFixTrackingRandomDisturbance')
+save('.\regrets\regAvgJingtaoRandomDisturbance.mat','regAvgJingtaoRandomDisturbance')
+save('.\regrets\regAvgLiRandomDisturbance.mat','regAvgLiRandomDisturbance')
 toc
 %% dynamic game
 tic
-Nplayers = 2;
+Nplayers = 4;
 T = 40;
 previewHorizon = 6;
 [costAvgMeFixPlayers2, costAvgNashPlayers2, relativeAvgPlayers2] = experimentOnlineGame(T,previewHorizon,numMonte,Nplayers);
+
+reg = costAvgMeFixPlayers2-costAvgNashPlayers2;
+relReg = relativeAvgPlayers2;
+
+labelFont = 20;
+numberFont = 17;
+
+figure
+plot(log(abs(relReg(1,previewHorizon:end))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Time Horizon','FontSize',labelFont)
+ylabel('log|RelRegret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\relRegretwindow1.pdf",'ContentType','vector','Resolution',600)
+
+figure
+plot(log(abs(relReg(2,previewHorizon:end))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Time Horizon','FontSize',labelFont)
+ylabel('log|RelRegret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\relRegretwindow2.pdf",'ContentType','vector','Resolution',600)
+%'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'),
+
+figure
+plot(log(abs(relReg(:,20))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Preview Horizon','FontSize',labelFont)
+ylabel('log|RelRegret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\relRegrettime20.pdf",'ContentType','vector','Resolution',600)
+
+figure
+plot(log(abs(relReg(:,35))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Preview Horizon','FontSize',labelFont)
+ylabel('log|RelRegret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\relRegrettime35.pdf",'ContentType','vector','Resolution',600)
+
+
+figure
+plot(log(abs(reg(1,previewHorizon:end))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Time Horizon','FontSize',labelFont)
+ylabel('log|Regret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\Regretwindow1.pdf",'ContentType','vector','Resolution',600)
+
+figure
+plot(log(abs(reg(2,previewHorizon:end))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Time Horizon','FontSize',labelFont)
+ylabel('log|Regret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\Regretwindow2.pdf",'ContentType','vector','Resolution',600)
+
+figure
+plot(log(abs(reg(:,20))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Preview Horizon','FontSize',labelFont)
+ylabel('log|Regret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\Regrettime20.pdf",'ContentType','vector','Resolution',600)
+
+figure
+plot(log(abs(reg(:,35))),'LineWidth',4)
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Preview Horizon','FontSize',labelFont)
+ylabel('log|Regret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\Regrettime35.pdf",'ContentType','vector','Resolution',600)
+
+% figure
+% plot(max(d,previewHorizon):T,log(regAvg(window1,max(d,previewHorizon):T)), 'LineWidth',4)
+% set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+% set(gcf,'Position',[100,100,size1,size2])
+% %     curtick = get(gca, 'xTick');
+% %     xticks(unique(round(curtick)));
+% xlabel('Time Horizon','FontSize',xfontsize)
+% ylabel('log|Regret|','FontSize',yfontsize)
+
+
+figure
+surf(log(abs(costAvgMeFixPlayers2-costAvgNashPlayers2)))
+hold on
+surf(costAvgNashPlayers2)
+
 save('.\regrets\costAvgMeFixPlayers2.mat','costAvgMeFixPlayers2')
 save('.\regrets\costAvgNashPlayers2.mat','costAvgNashPlayers2')
 save('.\regrets\relativeAvgPlayers2.mat','relativeAvgPlayers2')
@@ -114,6 +204,9 @@ save('.\regrets\costAvgMeFixPlayers3.mat','costAvgMeFixPlayers3')
 save('.\regrets\costAvgNashPlayers3.mat','costAvgNashPlayers3')
 save('.\regrets\relativeAvgPlayers3.mat','relativeAvgPlayers3')
 toc
+
+
+load('.\regrets\relativeAvgPlayers3.mat')
 
 % player3 = costAvgMeFixPlayers3-costAvgNashPlayers3;
 % player3Rel = player3./costAvgNashPlayers3;
@@ -250,23 +343,23 @@ sum((player6Rel<1),"all")./(T*previewHorizon)
 % load(".\regrets\regAvgLiRandomDisturbance.mat")
 %% performance comparisons
 disp('Pendulum Comparison')
-showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum, regAvgMeFixOnestepPendulum,regAvgJingtaoPendulum);
+showComparisons(regAvgLiPendulum, regAvgMeFixTrackingPendulum,regAvgJingtaoPendulum);
 disp('Random Comparison');
-showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom, regAvgMeFixOnestepRandom,regAvgJingtaoRandom);
+showComparisons(regAvgLiRandom, regAvgMeFixTrackingRandom,regAvgJingtaoRandom);
 disp('Pendulum Comparison Disturbance')
-showComparisons(regAvgLiPendulumDisturbance, regAvgMeFixTrackingPendulumDisturbance, regAvgMeFixOnestepPendulumDisturbance, regAvgJingtaoPendulumDisturbance);
+showComparisons(regAvgLiPendulumDisturbance, regAvgMeFixTrackingPendulumDisturbance, regAvgJingtaoPendulumDisturbance);
 disp('Random Comparison Disturbance')
-showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance, regAvgMeFixOnestepRandomDisturbance,regAvgJingtaoRandomDisturbance);
+showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance,regAvgJingtaoRandomDisturbance);
 
 %% Data Processing
-% 
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgMeFixTrackingPendulum.mat")
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgLiPendulum.mat")
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgMeFixOnestepPendulum.mat")
-% 
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgMeFixTrackingRandom.mat")
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgMeFixOnestepRandom.mat")
-% load("C:\Users\ychen\OneDrive\Documents\GitHub\OnlineLinearQuadratic\regrets\regAvgLiRandom.mat")
+
+load(".\regrets\regAvgMeFixTrackingPendulum.mat")
+load(".\regrets\regAvgLiPendulum.mat")
+load(".\regrets\regAvgMeFixOnestepPendulum.mat")
+
+load(".\regrets\regAvgMeFixTrackingRandom.mat")
+load(".\regrets\regAvgMeFixOnestepRandom.mat")
+load(".\regrets\regAvgLiRandom.mat")
 
 % 
 % %linear no disturbance
@@ -311,4 +404,7 @@ showComparisons(regAvgLiRandomDisturbance, regAvgMeFixTrackingRandomDisturbance,
 % DGDataProcessing(player2./costAvgNashPlayers2,T, previewHorizon,numMonte, 1, "players2Relative")
 % DGDataProcessing(player6./costAvgNashPlayers6,T, previewHorizon,numMonte, 1, "players6Relative")
 DGDataProcessing(player3Rel,T, previewHorizon,numMonte, 1, "players3Relative")
-sum((player3Rel<= 1), "all")
+
+player3 = costAvgMeFixPlayers3-costAvgNashPlayers3;
+DGDataProcessing(relativeAvgPlayers3,T, previewHorizon,numMonte, 1, "relRegretplayers3")
+% sum((relativeAvgPlayers3<= 1), "all")./(T*previewHorizon)
