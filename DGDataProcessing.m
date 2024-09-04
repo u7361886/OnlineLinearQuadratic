@@ -40,58 +40,58 @@ function DGDataProcessing(regAvg, T, previewHorizon, numMonte, d, name1, time1, 
 %     size1 = 1450;
 %     size2 = 950;
 
-    figure
-    imagesc(previewHorizon:T,0:previewHorizon-1,(regAvg(:,previewHorizon:T)))
-    colorbar
-%     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gcf,'Position',[100,100,size1,size2])
-    curtick = get(gca, 'xTick');
-    xticks(unique(round(curtick)));
-    xlabel('Time Horizon','FontSize',xfontsize)
-    ylabel('log|Regret|','FontSize',yfontsize)
-    exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window1) + "ColorMap" + ".pdf",'ContentType','vector','Resolution',600)
+%     figure
+%     imagesc(previewHorizon:T,0:previewHorizon-1,(regAvg(:,previewHorizon:T)))
+%     colorbar
+% %     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+%     set(gcf,'Position',[100,100,size1,size2])
+%     curtick = get(gca, 'xTick');
+%     xticks(unique(round(curtick)));
+%     xlabel('Time Horizon','FontSize',xfontsize)
+%     ylabel('log|Regret|','FontSize',yfontsize)
+%     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window1) + "ColorMap" + ".pdf",'ContentType','vector','Resolution',600)
     
 %     size1 = 1550;
 %     size2 = 1050;
     figure
     plot(max(d,previewHorizon):T,log(regAvg(window1,max(d,previewHorizon):T)), 'LineWidth',4)
     set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
-        set(gcf,'Position',[100,100,size1,size2])
+%     set(gcf,'Position',[100,100,size1,size2])
 %     curtick = get(gca, 'xTick');
 %     xticks(unique(round(curtick)));
     xlabel('Time Horizon','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
-    xlim([previewHorizon T])
+%     xlim([previewHorizon T])
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window1) + ".pdf",'ContentType','vector','Resolution',600)
     
     figure
     plot(max(d,previewHorizon):T,log(regAvg(window2,max(d,previewHorizon):T)), 'LineWidth',4)
 %     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gcf,'Position',[100,100,size1,size2])
+%     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Time Horizon','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Window" + string(window2) + ".pdf",'ContentType','vector')
     
     figure
     plot(0:1:previewHorizon-1,log(abs(regAvg(:,time1))), 'LineWidth',4)
-    curtick = get(gca, 'xTick');
-    xticks(unique(round(curtick)));
+%     curtick = get(gca, 'xTick');
+%     xticks(unique(round(curtick)));
 %     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gcf,'Position',[100,100,size1,size2])
+%     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Preview Window','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Time" + string(time1) + ".pdf",'ContentType','vector')
     
     figure
     plot(0:previewHorizon-1,log(abs((regAvg(:,time2)))), 'LineWidth',4)
-    curtick = get(gca, 'xTick');
-    xticks(unique(round(curtick)));
+%     curtick = get(gca, 'xTick');
+%     xticks(unique(round(curtick)));
 %     set(gca, 'XTickLabel', get(gca, 'XTick'), 'YTickLabel', get(gca, 'YTick'), 'FontName', 'Arial', 'FontSize', ylabelFontSize);
     set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
-    set(gcf,'Position',[100,100,size1,size2])
+%     set(gcf,'Position',[100,100,size1,size2])
     xlabel('Preview Window','FontSize',xfontsize)
     ylabel('log|Regret|','FontSize',yfontsize)
     exportgraphics(gcf,".\plots\" + name1 + "Time" + string(time2) + ".pdf",'ContentType','vector')

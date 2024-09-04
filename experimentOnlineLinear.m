@@ -1,4 +1,4 @@
-function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T,previewHorizon,numMonte,typeSystem,wMag,n,m)
+function [costTracking,costLina,costOnestep,costTrival,costNash] = experimentOnlineLinear(T,previewHorizon,numMonte,typeSystem,wMag,n,m)
 
 %[regAvgMeFix1,regAvgMeFix2,regAvgLi,regAvgJingtao] = experimentOnlineLinear(T,previewHorizon,numMonte,typeSystem,wMag,n,m)
     strInd = 0;
@@ -7,11 +7,12 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
     costLina = zeros(previewHorizon,T);
 %     costJingtao = zeros(previewHorizon,T);
     costNash = zeros(previewHorizon,T);
+    costTrival = zeros(previewHorizon,T);
 %     regAvgMeFix1 = zeros(previewHorizon,T);
 %     regAvgMeFix2 = zeros(previewHorizon,T);
 %     regAvgLi = zeros(previewHorizon,T);
 %     regAvgJingtao = zeros(previewHorizon,T);
-    poleScale = 10^(-1);
+    poleScale = 0.5;
     if(strcmp("pendulum",typeSystem))
 %             [~,B,~] = LinearInvertedPendulumGenerator(poleScale);
 %             sysDim = size(B);
@@ -25,20 +26,20 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
         %% Linear System onedim
         if(strcmp("pendulum",typeSystem))
             [A,B,K0] = LinearInvertedPendulumGenerator(poleScale);
-        else
+        elseif(strcmp("random",typeSystem))
             [A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale);
         end
-            %% Linear Control Costs
-            qrangeLower = 8*10^3;
-            qrangeHigher = 3.2*10^4;
-            rrangeLower = 2*10^3;
-            rrangeHigher = 9.8*10^4;
-            [Q,R] = LinearCostGenerator(qrangeLower,qrangeHigher,rrangeLower,rrangeHigher,n,m,T);
-            d = dfind(A,B);
-            w = wMag*randn(n,T);
-            x0 = 10*rand(n,1);
+        %% Linear Control Costs
+        qrangeLower = 10000;
+        qrangeHigher = 1000;
+        rrangeLower = 100;
+        rrangeHigher = 10;
+        [Q,R] = LinearCostGenerator(qrangeLower,qrangeHigher,rrangeLower,rrangeHigher,n,m,T);
+        d = dfind(A,B);
+        w = wMag*randn(n,T);
+        x0 = 1000*rand(n,1);
         %% Online Control Result
-        for W = strInd:d:previewHorizon-1
+        for W = strInd:previewHorizon-1
             for t = previewHorizon:T
                 %% Onedim Linear
                 tempAdd = zeros(previewHorizon,T);
@@ -48,6 +49,7 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
                 Qmax = (qrangeLower+qrangeHigher)*eye(n);
                 Rmax = (rrangeLower+rrangeHigher)*eye(m);
                 [x3,u3] = onedimLina(A,B,Q,R,t,x0,n,m,w,W,Qmax,Rmax);
+                [x4,u4] = onlineTrivial(A,B,K0,x0,t,w,n,m);
 %                 [x4,u4] = onedimJingtao(A,B,Q,R,t,x0,n,m,w,W,d);
 
                 tempAdd(W+1,t) = onedimCost(x1,u1,Q,R,t);
@@ -58,6 +60,9 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
 
                 tempAdd(W+1,t) = onedimCost(x3,u3,Q,R,t);
                 costLina = costLina + tempAdd;
+
+                tempAdd(W+1,t) = onedimCost(x4,u4,Q,R,t);
+                costTrival = costTrival + tempAdd;
 
 %                 tempAdd(W+1,t) = onedimCost(x4,u4,Q,R,t);
 %                 costJingtao = costJingtao + tempAdd;
@@ -86,6 +91,8 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
     costTracking = costTracking./numMonte;
     costOnestep = costOnestep./numMonte;
     costLina = costLina./numMonte;
+    costTrival = costTrival./numMonte;
 %     costJingtao = costJingtao./numMonte;
     costNash = costNash./numMonte;
+    
 end

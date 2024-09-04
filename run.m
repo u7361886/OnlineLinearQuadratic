@@ -8,10 +8,10 @@ numThreads = 10;
 % numThreads = str2double(getenv('NUMBER_OF_PROCESSORS'));
 % maxNumCompThreads(numThreads);
 % tempMonte = str2double(getenv('NUMBER_OF_PROCESSORS'));
-numMonte = 20*numThreads;
+numMonte = 10*numThreads;
 wMag = 0;
-n = 4;
-m = 1;
+n = 5;
+m = 2;
 %% pendulum system
 tic
 %[regAvgMeFixTrackingPendulum,regAvgMeFixOnestepPendulum,regAvgLiPendulum,regAvgJingtaoPendulum] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
@@ -24,6 +24,22 @@ regJingtaoPendulum = costJingtaoPendulum-costNashTrackingPendulum;
 save('.\regrets\regTrackingPendulum.mat','regTrackingPendulum')
 save('.\regrets\regLiPendulum.mat','regLiPendulum')
 save('.\regrets\regJingtaoPendulum.mat','regJingtaoPendulum')
+toc
+figure
+plot(costJingtaoPendulum(5,:))
+hold on
+plot(costLinaTrackingPendulum(5,:))
+hold on
+plot(costTrackingPendulum(5,:))
+% 
+% ind = 20;
+% 
+% figure
+% plot(costJingtaoPendulum(:,ind))
+% hold on
+% plot(costLinaTrackingPendulum(:,ind))
+% hold on
+% plot(costTrackingPendulum(:,ind))
 
 % save('.\regrets\costAvgMeFixTrackingPendulum.mat','costAvgMeFixTrackingPendulum')
 % % save('.\regrets\costAvgMeFixOnestepPendulum.mat','costAvgMeFixOnestepPendulum')
@@ -34,8 +50,9 @@ save('.\regrets\regJingtaoPendulum.mat','regJingtaoPendulum')
 % save('.\regrets\regAvgMeFixTrackingPendulum.mat','regAvgMeFixTrackingPendulum')
 % save('.\regrets\regAvgMeFixOnestepPendulum.mat','regAvgMeFixOnestepPendulum')
 % save('.\regrets\regAvgLiPendulum.mat','regAvgLiPendulum')
-toc
+
 %% random system
+wMag = 0;
 tic
 n = 4;
 m = 1;
@@ -50,6 +67,23 @@ save('.\regrets\regLiRandom.mat','regLiRandom')
 save('.\regrets\regJingtaoRandom.mat','regJingtaoRandom')
 toc
 
+% ind = 2;
+% figure
+% plot(costJingtaoRandom(ind,:))
+% hold on
+% plot(costLiRandom(ind,:))
+% hold on
+% plot(costTrackingRandom(ind,:))
+% % 
+% ind = 20;
+% 
+% figure
+% plot(costJingtaoRandom(:,ind))
+% hold on
+% plot(costLiRandom(:,ind))
+% hold on
+% plot(costTrackingRandom(:,ind))
+
 % ind = 6;
 % figure
 % plot(costTrackingPendulum(ind,:))
@@ -57,7 +91,7 @@ toc
 % plot(costJingtaoPendulum(ind,:))
 % hold on
 % plot(costLinaTrackingPendulum(ind,:))
-sum((costLinaTrackingPendulum-costJingtaoPendulum)>=0,"all")/(size(regJingtaoPendulum,1)*size(regJingtaoPendulum,2))
+% sum((costLinaTrackingPendulum-costJingtaoPendulum)>=0,"all")/(size(regJingtaoPendulum,1)*size(regJingtaoPendulum,2))
 %% disturbance 
 wMag = 1;
 tic
@@ -67,14 +101,22 @@ regTrackingPendulumDisturbance = costTrackingPendulumDisturbance-costNashPendulu
 regLiPendulumDisturbance = costLiPendulumDisturbance-costNashPendulumDisturbance;
 regJingtaoPendulumDisturbance = costJingtaoPendulumDisturbance-costNashPendulumDisturbance;
 
+figure
+plot(costJingtaoPendulumDisturbance(5,:))
+hold on
+plot(costLiPendulumDisturbance(5,:))
+hold on
+plot(costTrackingPendulumDisturbance(5,:))
+
 save('.\regrets\regTrackingPendulumDisturbance.mat','regTrackingPendulumDisturbance')
 save('.\regrets\regLiPendulumDisturbance.mat','regLiPendulumDisturbance')
 save('.\regrets\regJingtaoPendulumDisturbance.mat','regJingtaoPendulumDisturbance')
 toc
 %%
+wMag = 1;
 tic
-n = 4;
-m = 1;
+n = 5;
+m = 2;
 [costTrackingRandomDisturbance,costLiRandomDisturbance,costJingtaoRandomDisturbance,costNashRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
 
 regTrackingRandomDisturbance = costTrackingRandomDisturbance-costNashRandomDisturbance;
@@ -85,12 +127,44 @@ save('.\regrets\regTrackingRandomDisturbance.mat','regTrackingRandomDisturbance'
 save('.\regrets\regLiRandomDisturbance.mat','regLiRandomDisturbance')
 save('.\regrets\regJingtaoRandomDisturbance.mat','regJingtaoRandomDisturbance')
 toc
-
-
-% figure
-% plot(costJingtaoRandomDisturbance(5,:));
+%%
+figure
+imagesc(10:40,1:10,costJingtaoRandomDisturbance)
+colorbar
+%% 
+ind = 6;
+figure
+plot(costJingtaoRandomDisturbance(ind,:));
+hold on
+plot(costTrackingRandomDisturbance(ind,:));
+hold on
+plot(costLiRandomDisturbance(ind,:))
+hold on
+plot(costNashRandomDisturbance(ind,:))
+tind = 30;
+figure
+plot(costJingtaoRandomDisturbance(:,tind))
+hold on
+plot(costTrackingRandomDisturbance(:,tind));
+hold on
+plot(costLiRandomDisturbance(:,tind))
+%%
+ind = 8;
+figure
+plot(costJingtaoPendulumDisturbance(ind,:));
 % hold on
-% plot(costTrackingRandomDisturbance(5,:));
+% plot(costTrackingPendulumDisturbance(ind,:));
+hold on
+plot(costLiPendulumDisturbance(ind,:));
+% hold on
+% plot(costNashRandomDisturbance(ind,:));
+
+tind = 30;
+figure
+plot(costJingtaoPendulumDisturbance(:,tind))
+hold on
+plot(costLiPendulumDisturbance(:,tind));
+
 
 %% dynamic game
 tic

@@ -11,7 +11,7 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
 %     regAvgMeFix2 = zeros(previewHorizon,T);
 %     regAvgLi = zeros(previewHorizon,T);
 %     regAvgJingtao = zeros(previewHorizon,T);
-    poleScale = 10^(-1);
+    poleScale = 0.5;
     if(strcmp("pendulum",typeSystem))
 %             [~,B,~] = LinearInvertedPendulumGenerator(poleScale);
 %             sysDim = size(B);
@@ -20,23 +20,23 @@ function [costTracking,costLina,costOnestep,costNash] = experimentOnlineLinear(T
         n = 4;
         m = 1;
     end
-    for numExp = 1:numMonte
+    parfor numExp = 1:numMonte
         warning('off','all')
         %% Linear System onedim
         if(strcmp("pendulum",typeSystem))
             [A,B,K0] = LinearInvertedPendulumGenerator(poleScale);
-        else
+        elseif(strcmp("random",typeSystem))
             [A,B,K0] = LinearRandomSystemGenerator(n,m,poleScale);
         end
             %% Linear Control Costs
             qrangeLower = 8*10^3;
             qrangeHigher = 3.2*10^4;
-            rrangeLower = 2*10^3;
-            rrangeHigher = 9.8*10^4;
+            rrangeLower = 0.2;
+            rrangeHigher = 0.98;
             [Q,R] = LinearCostGenerator(qrangeLower,qrangeHigher,rrangeLower,rrangeHigher,n,m,T);
             d = dfind(A,B);
             w = wMag*randn(n,T);
-            x0 = 10*rand(n,1);
+            x0 = rand(n,1);
         %% Online Control Result
         for W = strInd:previewHorizon-1
             for t = previewHorizon:T

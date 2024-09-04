@@ -33,7 +33,11 @@ function [x1,u1] = onedimTrackingOL(A,B,Q,R,T,x0,n,m,w,W,K0)
         else
             x_tcond = x0;
             for j = 1:t-1
-                x_tcond = (A+B*K(:,:,j))*x_tcond + w(:,j);
+%                 if(j == t)
+%                     x_tcond = (A+B*K(:,:,j))*x_tcond;
+%                 else
+                    x_tcond = (A+B*K(:,:,j))*x_tcond + w(:,j);
+%                 end
             end
             u1(:,t) = K0*(x1(:,t)-x_tcond) + K(:,:,t)*x_tcond;
             x1(:,t+1) = A*x1(:,t)+B*u1(:,t)+w(:,t);

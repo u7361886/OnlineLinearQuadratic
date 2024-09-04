@@ -1,0 +1,340 @@
+clear all
+close all
+% clc
+%% initialize experiment
+T = 50;
+previewHorizon = 10;
+numThreads = 10;
+numMonte = 50*numThreads;
+wMag = 0;
+n = 1;
+m = 1;
+%% pendulum system
+tic
+[costTrackingPendulum,costLinaTrackingPendulum,costJingtaoPendulum,costTrivalTrackingPendulum,costNashTrackingPendulum] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag,n,m);
+
+regTrackingPendulum = costTrackingPendulum-costNashTrackingPendulum;
+regLiPendulum = costLinaTrackingPendulum-costNashTrackingPendulum;
+regJingtaoPendulum = costJingtaoPendulum-costNashTrackingPendulum;
+regTrivalPendulum = costTrivalTrackingPendulum-costNashTrackingPendulum;
+
+save('.\regrets\regTrackingPendulum.mat','regTrackingPendulum')
+save('.\regrets\regLiPendulum.mat','regLiPendulum')
+save('.\regrets\regJingtaoPendulum.mat','regJingtaoPendulum')
+save('.\regrets\regTrivalPendulum.mat','regTrivalPendulum')
+toc
+
+e = 0;
+ind = 45;
+til = 8;
+figure
+plot(log(abs(regJingtaoPendulum(1:til,ind)+e)))
+hold on
+plot(log(abs(regLiPendulum(1:til,ind)+e)))
+hold on
+plot(log(abs(regTrackingPendulum(1:til,ind)+e)))
+
+figure
+plot(log(abs(regJingtaoPendulum(1,til:end))),'LineWidth',4)
+hold on
+set(gca, 'FontName', 'Arial', 'FontSize', numberFont);
+xlabel('Time Horizon','FontSize',labelFont)
+ylabel('log|RelRegret|','FontSize',labelFont)
+exportgraphics(gcf,".\plots\relRegretwindow1.pdf",'ContentType','vector','Resolution',600)
+
+
+
+%% random system
+wMag = 0;
+tic
+n = 1;
+m = 1;
+[costTrackingRandom,costLiRandom,costJingtaoRandom,costTrivalRandom,costNashRandom] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
+
+regTrackingRandom = costTrackingRandom-costNashRandom;
+regLiRandom = costLiRandom-costNashRandom;
+regJingtaoRandom = costJingtaoRandom-costNashRandom;
+regTrivalRandom = costTrivalRandom-costNashRandom;
+
+save('.\regrets\regTrackingRandom.mat','regTrackingRandom')
+save('.\regrets\regLiRandom.mat','regLiRandom')
+save('.\regrets\regJingtaoRandom.mat','regJingtaoRandom')
+save('.\regrets\regTrivalRandom.mat','regTrivalRandom')
+
+toc
+%%
+ind = 10;
+figure
+plot(costLiRandom(ind,:))
+hold on
+plot(costJingtaoRandom(ind,:))
+%%
+ind = 40;
+figure
+plot(log(costJingtaoRandom(:,ind)))
+hold on
+plot(log(costLiRandom(:,ind)))
+hold on
+plot(log(costTrackingRandom(:,ind)))
+hold on
+plot(log(costTrackingRandom(:,ind)))
+legend("DeadBeat","Li","Tracking")
+ylabel('log(Cost)')
+xlabel('Preview Window')
+
+e = 10^(-6);
+figure
+plot(log(abs(regJingtaoRandom(1:end,ind)+e)))
+hold on
+plot(log(abs(regLiRandom(1:end,ind)+e)))
+hold on
+plot(log(abs(regTrackingRandom(1:end,ind)+e)))
+legend("DeadBeat","Li","Tracking")
+ylabel('log(Regret)')
+xlabel('Preview Window')
+
+%%
+diff = costLiRandom-costJingtaoRandom;
+figure
+imagesc(previewHorizon+1:T,0:previewHorizon-1,diff(:,previewHorizon:T));
+colorbar
+
+num = 30;
+sum(diff(:,num:T)>=0,'all')/((previewHorizon)*(T-num))
+
+%% disturbance 
+wMag = 1;
+tic
+[costTrackingPendulumDisturbance,costLiPendulumDisturbance,costJingtaoPendulumDisturbance,costNashPendulumDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"pendulum",wMag);
+
+regTrackingPendulumDisturbance = costTrackingPendulumDisturbance-costNashPendulumDisturbance;
+regLiPendulumDisturbance = costLiPendulumDisturbance-costNashPendulumDisturbance;
+regJingtaoPendulumDisturbance = costJingtaoPendulumDisturbance-costNashPendulumDisturbance;
+
+figure
+plot(costJingtaoPendulumDisturbance(5,:))
+hold on
+plot(costLiPendulumDisturbance(5,:))
+hold on
+plot(costTrackingPendulumDisturbance(5,:))
+
+save('.\regrets\regTrackingPendulumDisturbance.mat','regTrackingPendulumDisturbance')
+save('.\regrets\regLiPendulumDisturbance.mat','regLiPendulumDisturbance')
+save('.\regrets\regJingtaoPendulumDisturbance.mat','regJingtaoPendulumDisturbance')
+toc
+
+
+ind = 50;
+figure
+plot(costLiPendulumDisturbance(:,ind))
+hold on
+plot(costTrackingPendulumDisturbance(:,ind))
+
+figure
+plot(regJingtaoPendulumDisturbance(:,ind))
+
+
+diff = costLiPendulumDisturbance-costTrackingPendulumDisturbance;
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,diff(:,previewHorizon:T));
+colorbar
+
+%%
+wMag = 1;
+% tic
+n = 1;
+m = 1;
+previewHorizon = 10;
+[costTrackingRandomDisturbance,costLiRandomDisturbance,costJingtaoRandomDisturbance,costTrivalRandomDisturbance,costNashRandomDisturbance] = experimentOnlineLinear(T,previewHorizon,numMonte,"random",wMag,n,m);
+
+regTrackingRandomDisturbance = costTrackingRandomDisturbance-costNashRandomDisturbance;
+regLiRandomDisturbance = costLiRandomDisturbance-costNashRandomDisturbance;
+regJingtaoRandomDisturbance = costJingtaoRandomDisturbance-costNashRandomDisturbance;
+regTrivalRandomDisturbance = costTrivalRandomDisturbance-costNashRandomDisturbance;
+
+save('.\regrets\regTrackingRandomDisturbance.mat','regTrackingRandomDisturbance')
+save('.\regrets\regLiRandomDisturbance.mat','regLiRandomDisturbance')
+save('.\regrets\regJingtaoRandomDisturbance.mat','regJingtaoRandomDisturbance')
+save('.\regrets\regTrivalRandomDisturbance.mat','regTrivalRandomDisturbance')
+% toc
+
+ind = 30;
+til = 10;
+figure
+plot(log(abs(regLiRandomDisturbance(1:til,ind))))
+hold on
+plot(log(abs(regTrackingRandomDisturbance(1:til,ind))))
+hold on
+plot(log(abs(regJingtaoRandomDisturbance(1:til,ind))))
+
+ind = 30;
+figure
+plot(costLiRandomDisturbance(:,ind))
+hold on
+plot(costTrackingRandomDisturbance(:,ind))
+
+ind = 50;
+figure
+plot(costLiRandomDisturbance(:,ind))
+hold on
+plot(costTrackingRandomDisturbance(:,ind))
+
+diff = costLiRandomDisturbance-costTrackingRandomDisturbance;
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,diff(:,previewHorizon:T));
+colorbar
+
+
+sum(diff(:,previewHorizon:T)>=0,'all')/(size(diff,1)*(size(diff,2)-size(diff,1)))
+%% performance comparisons
+disp('Pendulum Comparison')
+showComparisons(regLiPendulum, regTrackingPendulum,regJingtaoPendulum);
+disp('Random Comparison');
+showComparisons(regLiRandom, regTrackingRandom,regJingtaoRandom);
+disp('Pendulum Comparison Disturbance')
+showComparisons(regLiPendulumDisturbance, regTrackingPendulumDisturbance, regJingtaoPendulumDisturbance);
+disp('Random Comparison Disturbance')
+showComparisons(regLiRandomDisturbance, regTrackingRandomDisturbance,regJingtaoRandomDisturbance);
+
+%% Data Processing
+% DGDataProcessing(penLiFixComp, T, previewHorizon,numMonte)
+e = 0;
+ind = 45;
+til = 10;
+xfontsize = 20;
+yfontsize = 20;
+ylabelFontSize = 20;
+time1 = 45;
+%pendulum
+figure
+plot(0:1:til-1,log(regLiPendulum(1:til,ind)+e),'-rx','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(regTrackingPendulum(1:til,ind)+e), '-b*','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(regJingtaoPendulum(1:til,ind)+e), '-go','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(regTrivalPendulum(1:til,ind)+e), '-msquare','MarkerSize',10)
+legend("OnlineMPC","Tracking","DeadBeat","Constant",'interpreter','latex','Location', 'best')
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize, 'XTick',0:1:til-1);
+xlabel('Preview Window','FontSize',xfontsize,'interpreter','latex')
+ylabel('$\mathrm{log}(\mathrm{Regret}_{T,W})$','FontSize',yfontsize,'interpreter','latex')
+exportgraphics(gcf,".\plots\" + "PendulumNoDisturbance" + "Time" + "50" + "dot"+".pdf",'ContentType','vector')
+
+% figure
+% plot(0:1:previewHorizon-1,log(regLiPendulum(:,time1)+e),'LineWidth',4)
+% hold on
+% plot(0:1:previewHorizon-1,log(regTrackingPendulum(:,time1)+e), 'LineWidth',4)
+% hold on
+% plot(0:1:previewHorizon-1,log(regJingtaoPendulum(:,time1)+e), 'LineWidth',4)
+% legend("OnlineMPC[21]","Tracking","DeadBeat")
+% set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+% xlabel('Preview Window','FontSize',xfontsize)
+% ylabel('log(Regret)','FontSize',yfontsize)
+% exportgraphics(gcf,".\plots\" + "PendulumNoDisturbance" + "Time" + "50" + ".pdf",'ContentType','vector')
+
+
+%random
+% figure
+% plot(0:1:previewHorizon-1,log(regLiRandom(:,time1)+e), 'LineWidth',4)
+% hold on
+% plot(0:1:previewHorizon-1,log(regTrackingRandom(:,time1)+e), 'LineWidth',4)
+% hold on
+% plot(0:1:previewHorizon-1,log(regJingtaoRandom(:,time1)+e), 'LineWidth',4)
+% legend("OnlineMPC[21]","Tracking","DeadBeat")
+% set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+% xlabel('Preview Window','FontSize',xfontsize)
+% ylabel('log(Regret)','FontSize',yfontsize)
+% exportgraphics(gcf,".\plots\" + "RandomNoDisturbance" + "Time" + "50" + ".pdf",'ContentType','vector')
+timetil = 9;
+figure
+plot(0:1:timetil-1,log(regLiRandom(1:timetil,time1)+e), '-rx','MarkerSize',10)
+hold on
+plot(0:1:timetil-1,log(regTrackingRandom(1:timetil,time1)+e), '-b*','MarkerSize',10)
+hold on
+plot(0:1:timetil-1,log(regJingtaoRandom(1:timetil,time1)+e),'-go','MarkerSize',10)
+hold on
+plot(0:1:timetil-1,log(regTrivalRandom(1:timetil,time1)+e),'-msquare','MarkerSize',10)
+legend("OnlineMPC","Tracking","DeadBeat","Constant",'interpreter','latex','Location','best')
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize,'XTick',0:1:til-1);
+xlabel('Preview Window','FontSize',xfontsize,'interpreter','latex')
+ylabel('$\mathrm{log}(\mathrm{Regret}_{T,W})$','FontSize',yfontsize,'interpreter','latex')
+exportgraphics(gcf,".\plots\" + "RandomNoDisturbance" + "Time" + "50" + "dot"+ ".pdf",'ContentType','vector')
+
+%disturbance pendulum
+diff1 = regLiPendulumDisturbance-regTrackingRandomDisturbance;
+diff2 = regLiPendulumDisturbance-regJingtaoPendulumDisturbance;
+diff3 = regTrackingPendulumDisturbance-regJingtaoPendulumDisturbance;
+
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,diff1(:,previewHorizon:T))
+colorbar
+exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "LiTracking" + ".pdf",'ContentType','vector')
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+xlabel('Time Horizon','FontSize',xfontsize)
+ylabel('Preview Window','FontSize',yfontsize)
+
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,diff2(:,previewHorizon:T))
+colorbar
+exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "LiJingtao" + ".pdf",'ContentType','vector')
+xlabel('Time Horizon','FontSize',xfontsize)
+ylabel('Preview Window','FontSize',yfontsize)
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+
+figure
+imagesc(previewHorizon:T,0:previewHorizon-1,diff3(:,previewHorizon:T))
+colorbar
+exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "TrackingJingtao" + ".pdf",'ContentType','vector')
+xlabel('Time Horizon','FontSize',xfontsize)
+ylabel('Preview Window','FontSize',yfontsize)
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+
+%disturbance random 1 step
+
+ind = 30;
+til = 10;
+figure
+plot(0:1:til-1,log(abs(regLiRandomDisturbance(1:til,ind))),'-rx','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(abs(regTrackingRandomDisturbance(1:til,ind))), '-b*','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(abs(regJingtaoRandomDisturbance(1:til,ind))), '-go','MarkerSize',10)
+hold on
+plot(0:1:til-1,log(abs(regTrivalRandomDisturbance(1:til,ind))), '-msquare','MarkerSize',10)
+legend("OnlineMPC","Tracking","DeadBeat","Constant",'interpreter','latex','Location', 'east')
+set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize,'XTick',0:1:til-1);
+xlabel('Preview Window','FontSize',xfontsize,'interpreter','latex')
+ylabel('$\mathrm{log}(\mathrm{ExpectedRegret}_{T,W})$','FontSize',yfontsize,'interpreter','latex')
+exportgraphics(gcf,".\plots\" + "OneStepRandomDisturbance" + "Time" + "20" + "dot"+".pdf",'ContentType','vector')
+
+
+% %disturbance random
+% diff1 = regLiRandomDisturbance-regTrackingPendulumDisturbance;
+% diff2 = regLiRandomDisturbance-regJingtaoRandomDisturbance;
+% diff3 = regTrackingPendulumDisturbance-regJingtaoRandomDisturbance;
+% figure
+% imagesc(previewHorizon:T,0:previewHorizon-1,diff1(:,previewHorizon:T))
+% colorbar
+% exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "LiTracking" + ".pdf",'ContentType','vector')
+% xlabel('Time Horizon','FontSize',xfontsize)
+% ylabel('Preview Window','FontSize',yfontsize)
+% set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+% 
+% figure
+% plot(diff1(:,30))
+% 
+% figure
+% imagesc(previewHorizon:T,0:previewHorizon-1,diff2(:,previewHorizon:T))
+% colorbar
+% exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "LiJingtao" + ".pdf",'ContentType','vector')
+% xlabel('Time Horizon','FontSize',xfontsize)
+% ylabel('Preview Window','FontSize',yfontsize)
+% set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);
+% 
+% figure
+% imagesc(previewHorizon:T,0:previewHorizon-1,diff3(:,previewHorizon:T))
+% colorbar
+% exportgraphics(gcf,".\plots\" + "PendulumDisturbance" + "TrackingJingtao" + ".pdf",'ContentType','vector')
+% xlabel('Time Horizon','FontSize',xfontsize)
+% ylabel('Preview Window','FontSize',yfontsize)
+% set(gca,'FontName', 'Arial', 'FontSize', ylabelFontSize);

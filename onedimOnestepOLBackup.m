@@ -1,4 +1,4 @@
-function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
+function [x1,u1] = onedimOnestepOLBackup(A,B,Q,R,T,x0,n,m,w,W,d)
     x1 = zeros(n,T);
     u1 = zeros(m,T);
     x1(:,1) = x0;
@@ -7,19 +7,19 @@ function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
 
     %deadbeat matrix
     DB = zeros(n,d*m);
-%     DA = zeros(n,d*n);
+    DA = zeros(n,d*n);
     DBi = B;
     for i = m*(d-1)+1:-m:1
         DB(1:n,i:(i+m-1)) = DBi;
         DBi = A*DBi;
     end
-%     tempDB = DB'*DB;
+    tempDB = DB'*DB;
 
-%     DAi = eye(n);
-%     for i = n*(d-1)+1:-n:1
-%         DA(1:n,i:(i+n-1)) = DAi;
-%         DAi = A*DAi;
-%     end
+    DAi = eye(n);
+    for i = n*(d-1)+1:-n:1
+        DA(1:n,i:(i+n-1)) = DAi;
+        DAi = A*DAi;
+    end
 %     DBG = inv()*DB';
 %     size(DBG)
 %     DB
@@ -126,9 +126,8 @@ function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
 %         end
 %         u1(:,t) = cont(1:m);
 %         x1(:,t+1) = A*x1(:,t) + B*u1(:,t) + w(:,t);
-%         dBGain = inv(tempDB)*(DB')*(xexpect-A^(n)*x1(:,t));
-        ugain = linsolve(DB,xexpect-A^(d)*x1(:,t));
-        for p = 0:min(d-1,T-t-1)
+        dBGain = inv(DB'*DB)*(DB')*(xexpect-A^(d)*x1(:,t));
+        for n = 0:min(d-1,T-t-1)
 %             xexpect = x0;
 %             for tau = 1:min(t+d-1,T-1)
 %                 if(tau <= t+n)
@@ -139,9 +138,8 @@ function [x1,u1] = onedimOnestepOL(A,B,Q,R,T,x0,n,m,w,W,d)
 %             end
         
 %             u1(:,t+n) = K(:,:,t+n)*x1(:,t+n);
-            u1(:,t+p) = ugain(1+p*m:(p+1)*m);
-            x1(:,t+p+1) = A*x1(:,t+p) + B*u1(:,t+p) + w(:,t+p);
-%             disp('ok')
+            u1(:,t+n) = dBGain(1+n:n+m);
+            x1(:,t+n+1) = A*x1(:,t+n) + B*u1(:,t+n) + w(:,t+n);
         end
     end
 end
